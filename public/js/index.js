@@ -92,32 +92,41 @@ function init() {
 
   // console.log("video variables: " + createVideoVariables());
 
-  let video1 = setUpVideo("https://cdn.glitch.com/39b7ba95-a96e-44aa-9110-0d917a3046ad%2FpartA_Trim.mp4?v=1596058682930");
-  // let video1 = setUpVideo(videoSrcList[0]);
-  // let video2 = setUpVideo(videoSrcList[1]);
+  // Use fetch() to request list of videos in database
+  // this could be revised to use async and await
+  fetch('/list')
+    .then(response => response.json())
+    .then(json => {
 
-  let texture1 = createTextureFromVideoElement(video1);
-  // let texture2 = createTextureFromVideoElement(video2);
-  // texture.crossOrigin = "anonymous";
+      // Create an array of videos based on the JSON data
+      let videos = [];
+      json.forEach(elt => {
+        videos.push(setUpVideo(`upload/${elt.filename}`));
+      });
 
-  // iterate through planes to create grid
-  for (let i = 0; i < 10; i += 1) {
-    plane = new THREE.Mesh(
-      new THREE.CubeGeometry(0.5, 0.5, 0.5),
-      new THREE.MeshBasicMaterial({ map: texture1, side: THREE.DoubleSide })
-    );
-    // plane.position.x = planeXPos * 2;
-    plane.position.x = ( Math.random() - 0.5 ) * 5;
-    plane.position.y = ( Math.random() - 0.5 ) * 5;
-    // plane.position.z = ( Math.random() - 0.5 ) * 10;
+      // iterate through planes to create grid, one ver video
+      for (let i = 0; i < videos.length; i += 1) {
+        // Create a texture for each video
+        const texture = createTextureFromVideoElement(videos[i]);
+        plane = new THREE.Mesh(
+          new THREE.CubeGeometry(0.5, 0.5, 0.5),
+          new THREE.MeshBasicMaterial({
+            map: texture,
+            side: THREE.DoubleSide
+          })
+        );
+        // plane.position.x = planeXPos * 2;
+        plane.position.x = (Math.random() - 0.5) * 5;
+        plane.position.y = (Math.random() - 0.5) * 5;
+        // plane.position.z = ( Math.random() - 0.5 ) * 10;
 
-    // plane.position.z = -2;
-    // plane.position.x = planeXPos;
-    // planeXPos += 2;
+        // plane.position.z = -2;
+        // plane.position.x = planeXPos;
+        // planeXPos += 2;
 
-    scene.add(plane);
-  }
-
+        scene.add(plane);
+      }
+    });
 
   // let columns = 4,
   //   rows = 5

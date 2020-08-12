@@ -1,3 +1,4 @@
+
 //Some general Three.js components
 let renderer, scene, camera, controls;
 
@@ -7,8 +8,8 @@ let character;
 let rotationStep = Math.PI / 9.0;
 
 // custom video layout
-let plane1, plane2;
-let planeXPos = -3.25;
+let videoShape1, videoShape2;
+let videoShapeXPos = -3.25;
 
 let videoSrcList = [];
 
@@ -23,8 +24,8 @@ function init() {
 
   // Setup scene
   scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x282828);
-  scene.fog = new THREE.Fog(0x282828, 0.0, 10.0);
+  scene.background = new THREE.Color(0x000000);
+  scene.fog = new THREE.Fog(0x301934, 0.0, 10.0);
 
   // Setup camera
   camera = new THREE.PerspectiveCamera(
@@ -42,7 +43,7 @@ function init() {
 
   // A grid helper as a floor reference
   let gridHelper = new THREE.GridHelper(50, 50);
-  scene.add(gridHelper);
+  // scene.add(gridHelper);
 
   depthkit = new Depthkit();
   depthkit.load(
@@ -66,32 +67,6 @@ function init() {
     }
   );
 
-  // setup video planes
-  // iterate through file paths/urls
-  // for (let i = 0; i < 4; i += 1) {
-  //   let folder = "video/";
-  //   let fileName = "sample-video";
-  //   let fileNumber = i;
-  //   let fileExtension = ".mov";
-  //   let src = folder + fileName + fileNumber + fileExtension;
-  //   videoSrcList.push(src);
-  // }
-  // console.log("video source list: " + videoSrcList);
-
-  // iterate through video variables
-  // function createVideoVariables() {
-  //   let video = [];
-  //   for (let i = 0; i <= videoSrcList.length; i += 1) {
-  //     video[i] = "video" + i;
-  //     // video[i] = videoSrcList[i];
-
-  //     console.log(video[i]);
-  //   }
-  //   return video;
-  // }
-
-  // console.log("video variables: " + createVideoVariables());
-
   // Use fetch() to request list of videos in database
   // this could be revised to use async and await
   fetch('/list')
@@ -104,67 +79,29 @@ function init() {
         videos.push(setUpVideo(`upload/${elt.filename}`));
       });
 
-      // iterate through planes to create grid, one ver video
+      // iterate through videoShapes to create grid, one ver video
       for (let i = 0; i < videos.length; i += 1) {
         // Create a texture for each video
         const texture = createTextureFromVideoElement(videos[i]);
-        plane = new THREE.Mesh(
+        videoShape = new THREE.Mesh(
           new THREE.CubeGeometry(0.5, 0.5, 0.5),
           new THREE.MeshBasicMaterial({
             map: texture,
             side: THREE.DoubleSide
           })
         );
-        // plane.position.x = planeXPos * 2;
-        plane.position.x = (Math.random() - 0.5) * 5;
-        plane.position.y = (Math.random() - 0.5) * 5;
-        // plane.position.z = ( Math.random() - 0.5 ) * 10;
+        // videoShape.position.x = videoShapeXPos * 2;
+        videoShape.position.x = (Math.random() - 0.5) * 5;
+        videoShape.position.y = (Math.random() - 0.5) * 5;
+        // videoShape.position.z = ( Math.random() - 0.5 ) * 10;
 
-        // plane.position.z = -2;
-        // plane.position.x = planeXPos;
-        // planeXPos += 2;
+        // videoShape.position.z = -2;
+        // videoShape.position.x = videoShapeXPos;
+        // videoShapeXPos += 2;
 
-        scene.add(plane);
+        scene.add(videoShape);
       }
     });
-
-  // let columns = 4,
-  //   rows = 5
-  // size = 1,
-  //   spacing = 1.3;
-
-  // // var grid = new THREE.Object3d(); // just to hold them all together
-  // for (let i = 0; h < columns; i += 1) {
-  //   for (let j = 0; v < rows; j += 1) {
-  //     let box = new THREE.Mesh(
-  //       new THREE.PlaneGeometry(1.5, 1.5),
-  //       new THREE.MeshBasicMaterial({ map: texture1, side: THREE.DoubleSide })
-  //     );
-  //     box.position.x = (i - columns / 2) * spacing;
-  //     box.position.y = (j - rows / 2) * spacing;
-  //     scene.add(box);
-  //     // grid.add(box);
-  //   }
-  // }
-  // // scene.add(grid);
-
-  // plane1 = new THREE.Mesh(
-  //   new THREE.PlaneGeometry(1.5, 1.5),
-  //   new THREE.MeshBasicMaterial({ map: texture1, side: THREE.DoubleSide })
-  // );
-  // plane1.position.x -= 1.5;
-  // plane1.position.z -= 4;
-
-  // scene.add(plane1);
-
-  // plane2 = new THREE.Mesh(
-  //   new THREE.PlaneGeometry(1.5, 1.5),
-  //   new THREE.MeshBasicMaterial({ map: texture2, side: THREE.DoubleSide })
-  // );
-  // plane2.position.x += 1.5;
-  // plane2.position.z -= 4;
-
-  // scene.add(plane2);
 
   let element = setUpVideo();
   draw();
@@ -199,11 +136,11 @@ function draw() {
   renderer.render(scene, camera);
 
   //   let angle = 0.007;
-  //   plane1.rotation.x += angle;
-  //   plane1.rotation.y += angle * 0.125;
+  //   videoShape1.rotation.x += angle;
+  //   videoShape1.rotation.y += angle * 0.125;
 
-  //   plane2.rotation.x -= angle;
-  //   plane2.rotation.y -= angle * 0.99;
+  //   videoShape2.rotation.x -= angle;
+  //   videoShape2.rotation.y -= angle * 0.99;
 
   // controls.update();
   // camera.position.x += 0.01;

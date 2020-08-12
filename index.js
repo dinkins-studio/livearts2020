@@ -46,11 +46,3 @@ app.get('/list', (request, response) => {
     response.json(data);
   });
 });
-
-// app.post('/api', (request, response) => {
-//   const data = request.body;
-//   const timestamp = Date.now();
-//   data.timestamp = timestamp;
-//   database.insert(data);
-//   response.json(data);
-// });

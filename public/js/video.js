@@ -1,24 +1,45 @@
 // display video
 let capture;
 const button = document.getElementById('record');
+const vidParent = document.getElementById('video-placeholder');
 chunks = [];
 
 function setup() {
-  // let canvas = createCanvas(640, 480);
   noCanvas();
+
   capture = createCapture(VIDEO, {
     video: true,
-    audio: true
+    audio: true,
   });
-  capture.size(640, 480);
-  // capture.hide();
-}
 
-// function draw() {
-//   translate(capture.width, 0);
-//   scale(-1, 1);
-//   image(capture, 0, 0, width, height);
-// }
+  // echo cancellation attempt 1
+  // capture = createCapture(VIDEO, {
+  //   video: true,
+  //   audio: true,
+  //   echoCancellancellation: true
+  // });
+
+  // echo cancellation attempt 2
+  // let constraints = {
+  //   video: {
+  //     mandatory: {
+
+  //       minWidth: 1280;
+  //       minHeight: 720;
+  //     },
+  //     optional: [{
+  //       maxFrameRate: 10;
+  //     }]
+  //   },
+  //    audio: {
+  //      echoCancellation: true
+  //    } 
+  // };
+
+  //   capture = createCapture(constraints, function(stream));
+
+  capture.size(640, 480);
+}
 
 async function postToDatabase(blob) {
   let formdata = new FormData(); //create a from to of data to upload to the server
@@ -62,16 +83,17 @@ function record() {
 
 // display video recording on webpage
 function exportVideo(e) {
-  var blob = new Blob(chunks);
+  let blob = new Blob(chunks);
   console.log(blob);
-  var vid = document.createElement('video');
-  vid.id = 'recorded'
+  let vid = document.createElement('video');
+  vid.id = 'recorded';
   vid.controls = true;
   let videodata = URL.createObjectURL(blob);
   console.log(videodata);
   vid.src = videodata;
   postToDatabase(blob);
-  document.body.appendChild(vid);
+  // document.body.parent.appendChild(vid)
+  document.getElementById("video-placeholder").parentElement.appendChild(vid);
   vid.play();
 }
 button.onclick = record;

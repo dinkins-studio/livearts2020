@@ -1,4 +1,3 @@
-
 //Some general Three.js components
 let renderer, scene, camera, controls;
 
@@ -104,11 +103,8 @@ function init() {
     });
 
   let element = setUpVideo();
-  draw();
-
   window.addEventListener("resize", onWindowResize, false);
   window.addEventListener("keydown", onKeyDown, false);
-
   render();
 }
 
@@ -131,20 +127,6 @@ function setUpVideo(inSrc) {
   return videlem;
 }
 
-function draw() {
-  requestAnimationFrame(draw);
-  renderer.render(scene, camera);
-
-  //   let angle = 0.007;
-  //   videoShape1.rotation.x += angle;
-  //   videoShape1.rotation.y += angle * 0.125;
-
-  //   videoShape2.rotation.x -= angle;
-  //   videoShape2.rotation.y -= angle * 0.99;
-
-  // controls.update();
-  // camera.position.x += 0.01;
-}
 
 function createTextureFromVideoElement(video) {
   let texture = new THREE.VideoTexture(video);
@@ -158,7 +140,6 @@ function createTextureFromVideoElement(video) {
 
 function render() {
   requestAnimationFrame(render);
-
   renderer.render(scene, camera);
 }
 

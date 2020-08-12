@@ -4,41 +4,21 @@ const button = document.getElementById('record');
 const vidParent = document.getElementById('video-placeholder');
 chunks = [];
 
-function setup() {
-  noCanvas();
-
+// Separate function to start video
+function startCapture() {
   capture = createCapture(VIDEO, {
     video: true,
     audio: true,
   });
+  // Place and size the video
+  capture.parent('#video-placeholder');
+  capture.size(320, 240);
+  // This fixes the echo you don't need to hear yourself?
+  capture.elt.volume = 0;
+}
 
-  // echo cancellation attempt 1
-  // capture = createCapture(VIDEO, {
-  //   video: true,
-  //   audio: true,
-  //   echoCancellancellation: true
-  // });
-
-  // echo cancellation attempt 2
-  // let constraints = {
-  //   video: {
-  //     mandatory: {
-
-  //       minWidth: 1280;
-  //       minHeight: 720;
-  //     },
-  //     optional: [{
-  //       maxFrameRate: 10;
-  //     }]
-  //   },
-  //    audio: {
-  //      echoCancellation: true
-  //    } 
-  // };
-
-  //   capture = createCapture(constraints, function(stream));
-
-  capture.size(640, 480);
+function setup() {
+  noCanvas();
 }
 
 async function postToDatabase(blob) {

@@ -38,7 +38,7 @@ function setup() {
 
   //   capture = createCapture(constraints, function(stream));
 
-  capture.size(640, 480);
+  capture.size(windowWidth, 480);
 }
 
 async function postToDatabase(blob) {

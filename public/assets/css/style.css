@@ -61,6 +61,10 @@ canvas {
   /* padding: 1%; */
 }
 
+video {
+  width: 100%;
+}
+
 #info {
   position: absolute;
   width: 100%;
@@ -71,6 +75,9 @@ canvas {
   top: 0;
   left: 0;
   width: 20%;
+}
+a {
+  color: black;
 }
 
 h2.prompt {

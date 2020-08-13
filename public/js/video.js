@@ -4,14 +4,21 @@ const button = document.getElementById('record');
 const vidParent = document.getElementById('video-placeholder');
 chunks = [];
 
-function setup() {
-  noCanvas();
-
+// Separate function to start video
+function startCapture() {
   capture = createCapture(VIDEO, {
     video: true,
     audio: true,
   });
+  // Place and size the video
+  capture.parent('#video-placeholder');
+  capture.size(320, 240);
+  // This fixes the echo you don't need to hear yourself?
+  capture.elt.volume = 0;
+}
 
+function setup() {
+  noCanvas();
   // echo cancellation attempt 1
   // capture = createCapture(VIDEO, {
   //   video: true,
@@ -37,8 +44,6 @@ function setup() {
   // };
 
   //   capture = createCapture(constraints, function(stream));
-
-  capture.size(windowWidth, 480);
 }
 
 async function postToDatabase(blob) {

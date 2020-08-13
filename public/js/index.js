@@ -1,4 +1,3 @@
-
 //Some general Three.js components
 let renderer, scene, camera, controls;
 
@@ -102,11 +101,8 @@ function init() {
     });
 
   let element = setUpVideo();
-  draw();
-
   window.addEventListener("resize", onWindowResize, false);
   window.addEventListener("keydown", onKeyDown, false);
-
   render();
 }
 
@@ -145,7 +141,6 @@ function createTextureFromVideoElement(video) {
 
 function render() {
   requestAnimationFrame(render);
-
   renderer.render(scene, camera);
 }
 

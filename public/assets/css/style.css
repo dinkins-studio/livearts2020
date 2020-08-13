@@ -1,0 +1,251 @@
+@font-face {
+  font-family: 'lackitalic';
+  src: url('fonts/lack/lack-italic-webfont.woff2') format('woff2'), url('assets/fonts/lack/lack-italic-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'lack_lineitalic';
+  src: url('fonts/lack/lack-line-italic-webfont.woff2') format('woff2'), url('assets/fonts/lack/lack-line-italic-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'lack_lineregular';
+  src: url('fonts/lack/lack-line-regular-webfont.woff2') format('woff2'), url('assets/fonts/lack/lack-line-regular-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'lackregular';
+  src: url('fonts/lack/lack-regular-webfont.woff2') format('woff2'), url('assets/fonts/lack/lack-regular-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+*, ::after, ::before {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  font-size: 56.25%;
+}
+
+body {
+  background-color: black;
+  color: black;
+  font-family: 'lackregular', Helvetica, sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 3rem;
+}
+
+video {
+  display: block;
+  width: auto;
+  margin: 0 auto;
+  padding: 1%;
+}
+
+canvas {
+  display: block;
+  width: auto;
+  margin: 0 auto;
+  padding: 1%;
+}
+
+#info {
+  position: absolute;
+  width: 100%;
+}
+
+#depthkit-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20%;
+}
+
+h2.prompt {
+  font-size: 3.5rem;
+  margin 5%;
+}
+
+.disclaimer {
+  color: rgba(0, 0, 0, 100);
+  font-size: 1.5rem;
+}
+
+.disclaimer:first-child {
+  margin-top: 2.5%;
+}
+
+.disclaimer:last-child {
+  margin-bottom: 3%;
+}
+
+.button-container {
+  display: flex;
+  width: 100vw;
+  justify-content: space-between;
+}
+
+button {
+  background: rgba(255, 255, 255, 0.3);
+  /* background: rgb(255, 255, 255);
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0.4) 0%, rgba(161, 161, 161, 1) 43%, rgba(102, 102, 102, 1) 75%); */
+  background-repeat: no-repeat;
+  color: black;
+  border: none;
+  width: 100vw;
+  height: 7vh;
+  padding: 1%;
+  display: inline-block;
+  font-family: 'lackregular', Helvetica, sans-serif;
+  font-weight: normal;
+  font-size: .755em;
+  text-align: center;
+}
+
+.title {
+  font-size: 4.5rem;
+}
+
+.record-button:hover, .record-button:focus {
+  transition: 1s;
+  width: 7vw;
+  height: 7vw;
+  border-radius: 100%;
+}
+
+.record-button {
+  background: rgba(194, 0, 8, .75);
+}
+
+.delete-button {
+  background: rgba(66, 64, 66, .75);
+}
+
+.submit-button {
+  background: rgba(251, 238, 31, .75);
+}
+
+.object {
+  background: transparent;
+  position: fixed;
+  bottom: 7%;
+  right: 0;
+  width: 15%;
+  transform: rotateY(360deg);
+}
+
+img {
+  max-width: 100%;
+}
+
+/* modal bg */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0, 0, 0);
+  background-color: rgba(0, 0, 0, 0.4);
+  -webkit-animation-name: fadeIn;
+  -webkit-animation-duration: 0.4s;
+  animation-name: fadeIn;
+  animation-duration: 0.4s
+}
+
+/* modal content */
+
+.modal-content {
+  position: fixed;
+  bottom: 0;
+  background-color: rgba(255, 255, 255, 0.3);
+  width: 100%;
+  -webkit-animation-name: slideIn;
+  -webkit-animation-duration: 0.4s;
+  animation-name: slideIn;
+  animation-duration: 0.4s
+}
+
+.close {
+  color: black;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover, .close:focus {
+  transform: rotate(10deg);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.modal-header {
+  padding: 2%;
+  height: 7vh;
+  background-color: rgba(37, 36, 33, .75);
+}
+
+.modal-body {
+  /* padding-top: 1%; */
+}
+
+.modal-footer {
+  padding: 2px 16px;
+  background-color: rgba(83, 80, 82, .75);
+}
+
+/* modal animation */
+@-webkit-keyframes slideIn {
+  from {
+    bottom: -300px;
+    opacity: 0
+  }
+  to {
+    bottom: 0;
+    opacity: 1
+  }
+}
+
+@keyframes slideIn {
+  from {
+    bottom: -300px;
+    opacity: 0
+  }
+  to {
+    bottom: 0;
+    opacity: 1
+  }
+}
+
+@-webkit-keyframes fadeIn {
+  from {
+    opacity: 0
+  }
+  to {
+    opacity: 1
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0
+  }
+  to {
+    opacity: 1
+  }
+}

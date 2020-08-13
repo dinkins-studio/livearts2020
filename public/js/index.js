@@ -56,8 +56,8 @@ function init() {
 
       // Position and rotation adjustments
       dkCharacter.rotation.set(Math.PI - 3.5, 3, Math.PI / -2.0);
-      dkCharacter.position.set(-1.5, 2, .95);
-      dkCharacter.scale.set(5,5,5);
+      dkCharacter.position.set(-1.5, 1.5, .85);
+      dkCharacter.scale.set(4.5, 4.5, 4.5);
 
       // Depthkit video playback control
       depthkit.video.muted = "muted"; // Necessary for auto-play in chrome now

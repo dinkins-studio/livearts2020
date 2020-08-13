@@ -138,12 +138,22 @@ button {
 }
 
 .object {
+  display: inline-block;
   background: transparent;
   position: fixed;
   bottom: 7%;
   right: 0;
   width: 15%;
-  transform: rotateY(360deg);
+  animation: rotation 2s infinite linear;
+}
+
+@keyframes rotation {
+  50% {
+    transform: rotateZ(3deg);
+  }
+  100% {
+    transform: rotateZ(0deg);
+  }
 }
 
 img {

@@ -46,15 +46,17 @@ function init() {
 
   depthkit = new Depthkit();
   depthkit.load(
-    "https://cdn.glitch.com/88ddef19-31c1-4772-bdd6-29b3a07403ad%2FTAKE_07_30_01_45_31_Export_07_30_04_09_05.txt?v=1596219873183",
-    "https://cdn.glitch.com/88ddef19-31c1-4772-bdd6-29b3a07403ad%2FTAKE_07_30_01_45_31_Export_07_30_04_09_05.webm?v=1596219863242",
+    // "https://cdn.glitch.com/88ddef19-31c1-4772-bdd6-29b3a07403ad%2FTAKE_07_30_01_45_31_Export_07_30_04_09_05.txt?v=1596219873183",
+    // "https://cdn.glitch.com/88ddef19-31c1-4772-bdd6-29b3a07403ad%2FTAKE_07_30_01_45_31_Export_07_30_04_09_05.webm?v=1596219863242",
+    "../assets/character/prof.txt",
+    "../assets/character/prof.webm",
     dkCharacter => {
       character = dkCharacter;
 
-      //Position and rotation adjustments
+      // Position and rotation adjustments
       dkCharacter.rotation.set(Math.PI - 3.5, 3, Math.PI / -2.0);
-      // dkCharacter.rotation.y = Math.PI;
-      dkCharacter.position.set(0.25, 0.92, 0);
+      dkCharacter.position.set(-1.5, 1.5, .85);
+      dkCharacter.scale.set(4.5, 4.5, 4.5);
 
       // Depthkit video playback control
       depthkit.video.muted = "muted"; // Necessary for auto-play in chrome now
@@ -83,20 +85,16 @@ function init() {
         // Create a texture for each video
         const texture = createTextureFromVideoElement(videos[i]);
         videoShape = new THREE.Mesh(
-          new THREE.CubeGeometry(0.5, 0.5, 0.5),
+          new THREE.CubeGeometry(0.5, 0.5, 0.25),
           new THREE.MeshBasicMaterial({
             map: texture,
             side: THREE.DoubleSide
           })
         );
-        // videoShape.position.x = videoShapeXPos * 2;
+   
         videoShape.position.x = (Math.random() - 0.5) * 5;
         videoShape.position.y = (Math.random() - 0.5) * 5;
         // videoShape.position.z = ( Math.random() - 0.5 ) * 10;
-
-        // videoShape.position.z = -2;
-        // videoShape.position.x = videoShapeXPos;
-        // videoShapeXPos += 2;
 
         scene.add(videoShape);
       }
@@ -117,16 +115,19 @@ function setUpVideo(inSrc) {
 
   videlem.autoplay = true;
   videlem.muted = true;
-  videlem.setAttribute("crossorigin", "anonymous");
-  // i think this will not be not be needed if you have a server
-
-  videlem.style.display = "none"; // this makes it so the html element isnt there
-
+  videlem.setAttribute("crossorigin", "anonymous"); // i think this will not be not be needed if you have a server
+  videlem.style.display = "none"; // hide html video element
   videlem.load();
   videlem.play();
   return videlem;
 }
 
+function draw() {
+  requestAnimationFrame(draw);
+  renderer.render(scene, camera);
+  // controls.update();
+  // camera.position.x += 0.01;
+}
 
 function createTextureFromVideoElement(video) {
   let texture = new THREE.VideoTexture(video);

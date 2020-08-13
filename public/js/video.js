@@ -19,6 +19,31 @@ function startCapture() {
 
 function setup() {
   noCanvas();
+  // echo cancellation attempt 1
+  // capture = createCapture(VIDEO, {
+  //   video: true,
+  //   audio: true,
+  //   echoCancellancellation: true
+  // });
+
+  // echo cancellation attempt 2
+  // let constraints = {
+  //   video: {
+  //     mandatory: {
+
+  //       minWidth: 1280;
+  //       minHeight: 720;
+  //     },
+  //     optional: [{
+  //       maxFrameRate: 10;
+  //     }]
+  //   },
+  //    audio: {
+  //      echoCancellation: true
+  //    } 
+  // };
+
+  //   capture = createCapture(constraints, function(stream));
 }
 
 async function postToDatabase(blob) {

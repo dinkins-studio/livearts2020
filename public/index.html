@@ -8,7 +8,7 @@
   <!-- Origin Trial Token, feature = WebVR (For Chrome M59+), origin = https://juniorxsound.github.io, expires = 2017-08-16 -->
   <meta http-equiv="origin-trial" data-feature="WebVR (For Chrome M59+)" data-expires="2017-08-16"
     content="Ahwo2B0LoM2bLB015eLJ4CAvJa0xF9VVn0FO1/AaYfPklvBUwcfYFkXKenD57vhGo1WQt9Hg9IFauhKdRgLN8w8AAABreyJvcmlnaW4iOiJodHRwczovL2p1bmlvcnhzb3VuZC5naXRodWIuaW86NDQzIiwiZmVhdHVyZSI6IldlYlZSMS4xIiwiZXhwaXJ5IjoxNTAyOTEyNTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZX0=" />
-  <link rel="stylesheet" type="text/css" href="style.css" />
+  <link rel="stylesheet" type="text/css" href="assets/css/style.css" />
 
 </head>
 
@@ -19,30 +19,50 @@
   <script src="js/depthkit.js"></script>
 
   <div id="info">
-    <!-- <button> 
-      <a onclick="window.open('video.html','info','width=800,height=800'); return false;"> SAY IT LOUD </a>
-    </button> -->
+    <button id="submit-video" class="object"> </button>
+    <button id="next" class="artifact"> </button>
 
-    <button id="submit-video"> Say It Loud </button>
+    <div id="video-prompt" class="modal">
 
-    <div id="submit-video-prompt" class="modal">
+      <div class="modal-content">
+          <div class="modal-header">
+              <span class="close">&times;</span>
+              <h2 class="prompt"> What do you have to say? </h2>
+          </div>
 
-      <div class="video-prompt">
-        <span class="close"> &times; </span>
+          <div class="modal-body">
+              <br>
+              <p style="text-align: center;"> [ <a href="video.html" target="_blank">Video app with webcam feed will be here</a> ] </p>
+              <div id="video-placeholder"> </div>
+              <br>
+          </div>
 
-        <div class="video-recording-suite">
+          <div class="modal-body">
 
-          <h1> What do you want your community to know? </h1>
-          <button id="record" class="record-button"> record </button>
-          <button class="record-button"> delete </button>
-          <button class="record-button"> submit </button>
+            <div class="video-recording-suite">
 
-          <div id="video-placeholder"> </div>
+                <div class="button-container">
 
+                    <button class="delete-button"> delete </button>
+                    <button id="record" class="record-button"> record </button>
+                    <button class="submit-button"> submit </button>
+
+                </div>
+            </div>
         </div>
 
+          <div class="modal-footer">
+              <h3 class="disclaimer">Privacy Notice</h3>
+              <p class="disclaimer">
+                  By clicking “submit” you grant this website permission to save the video you upload to a
+                  database managed by Stephanie Dinkins Studio in order to display your video on this website.
+              </p>
+          </div>
       </div>
-    </div>
+
+  </div>
+
+
   </div>
 
   <script src="js/layout.js"></script>

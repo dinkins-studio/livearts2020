@@ -114,10 +114,6 @@ button {
   text-align: center;
 }
 
-.title {
-  font-size: 4.5rem;
-}
-
 .record-button:hover, .record-button:focus {
   transition: 1s;
   width: 7vw;
@@ -139,20 +135,35 @@ button {
 
 .object {
   display: inline-block;
-  background: transparent;
+  background-color: transparent;
+  background: url(../images/coin-collection-box1.png) no-repeat 50%;
+  background-size: auto 90%;
+  background-position: 50%;
   position: fixed;
-  bottom: 7%;
-  right: 0;
-  width: 15%;
-  animation: rotation 2s infinite linear;
+  bottom: 0.25%;
+  right: 1.25%;
+  width: 12rem;
+  height: 18rem;
+  animation: nudge 2s infinite linear;
+  cursor: pointer;
 }
 
-@keyframes rotation {
+@keyframes nudge {
   50% {
     transform: rotateZ(3deg);
   }
   100% {
     transform: rotateZ(0deg);
+  }
+}
+
+
+@keyframes rotation {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(359deg);
   }
 }
 

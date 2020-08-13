@@ -58,7 +58,7 @@ canvas {
   display: block;
   width: auto;
   margin: 0 auto;
-  padding: 1%;
+  /* padding: 1%; */
 }
 
 #info {
@@ -115,10 +115,10 @@ button {
 }
 
 .record-button:hover, .record-button:focus {
-  transition: 1s;
-  width: 7vw;
-  height: 7vw;
-  border-radius: 100%;
+  /* transition: 1s;
+  width: 7vh;
+  height: 7vh;
+  border-radius: 100%; */
 }
 
 .record-button {
@@ -148,6 +148,21 @@ button {
   cursor: pointer;
 }
 
+.artifact {
+  display: inline-block;
+  background-color: transparent;
+  background: url(../images/coin-front.png) no-repeat 50%;
+  background-size: auto 90%;
+  background-position: 50%;
+  position: fixed;
+  bottom: 10%;
+  left: 1.25%;
+  width: 10rem;
+  height: 10rem;
+  animation: rotate 8s infinite linear;
+  cursor: pointer;
+}
+
 @keyframes nudge {
   50% {
     transform: rotateZ(3deg);
@@ -157,8 +172,7 @@ button {
   }
 }
 
-
-@keyframes rotation {
+@keyframes rotate {
   from {
     transform: rotateY(0deg);
   }
@@ -186,7 +200,7 @@ img {
   -webkit-animation-name: fadeIn;
   -webkit-animation-duration: 0.4s;
   animation-name: fadeIn;
-  animation-duration: 0.4s
+  animation-duration: 0.4s;
 }
 
 /* modal content */
@@ -216,7 +230,7 @@ img {
 }
 
 .modal-header {
-  padding: 2%;
+  padding: 1% 16px;
   height: 7vh;
   background-color: rgba(37, 36, 33, .75);
 }

@@ -54,9 +54,8 @@ function init() {
     dkCharacter => {
       character = dkCharacter;
 
-      //Position and rotation adjustments
+      // Position and rotation adjustments
       dkCharacter.rotation.set(Math.PI - 3.5, 3, Math.PI / -2.0);
-      // dkCharacter.rotation.y = Math.PI;
       dkCharacter.position.set(-1.5, 2, .95);
       dkCharacter.scale.set(5,5,5);
 
@@ -93,14 +92,10 @@ function init() {
             side: THREE.DoubleSide
           })
         );
-        // videoShape.position.x = videoShapeXPos * 2;
+   
         videoShape.position.x = (Math.random() - 0.5) * 5;
         videoShape.position.y = (Math.random() - 0.5) * 5;
         // videoShape.position.z = ( Math.random() - 0.5 ) * 10;
-
-        // videoShape.position.z = -2;
-        // videoShape.position.x = videoShapeXPos;
-        // videoShapeXPos += 2;
 
         scene.add(videoShape);
       }
@@ -124,11 +119,8 @@ function setUpVideo(inSrc) {
 
   videlem.autoplay = true;
   videlem.muted = true;
-  videlem.setAttribute("crossorigin", "anonymous");
-  // i think this will not be not be needed if you have a server
-
-  videlem.style.display = "none"; // this makes it so the html element isnt there
-
+  videlem.setAttribute("crossorigin", "anonymous"); // i think this will not be not be needed if you have a server
+  videlem.style.display = "none"; // hide html video element
   videlem.load();
   videlem.play();
   return videlem;
@@ -137,14 +129,6 @@ function setUpVideo(inSrc) {
 function draw() {
   requestAnimationFrame(draw);
   renderer.render(scene, camera);
-
-  //   let angle = 0.007;
-  //   videoShape1.rotation.x += angle;
-  //   videoShape1.rotation.y += angle * 0.125;
-
-  //   videoShape2.rotation.x -= angle;
-  //   videoShape2.rotation.y -= angle * 0.99;
-
   // controls.update();
   // camera.position.x += 0.01;
 }

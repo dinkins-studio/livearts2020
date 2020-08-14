@@ -11,6 +11,6 @@ Project description forthcoming.
 - [Char Stiles](http://charstiles.com/), technical advisor
 
 # Deploy
-1. In terminal, first run 'npm install'
-2. Next run 'node index.js'
-3. Please note that you will have to add your own Depthkit files for 'prof.webm' and 'prof.txt' as these files are not under the open source license for this project.
+1. In terminal, first run `npm install`
+2. Next run `node index.js`
+3. Please note that you will have to add your own Depthkit files for `prof.webm` and `prof.txt` as these files are not under the open source license for this project.

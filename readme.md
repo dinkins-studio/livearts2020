@@ -7,5 +7,5 @@ Project description forthcoming.
 # Credits & acknowledgements
 - [Stephanie Dinkins](http://stephaniedinkins.com), artist
 - [Neta Bomani](https://netabomani.com), engineer
-- [Dan Schiffman](https://shiffman.net/), technical advisor
+- [Dan Shiffman](https://shiffman.net/), technical advisor
 - [Char Stiles](http://charstiles.com/), technical advisor

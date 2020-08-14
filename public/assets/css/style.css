@@ -48,21 +48,21 @@ body {
 }
 
 video {
-  display: block;
-  width: auto;
-  margin: 0 auto;
-  padding: 1%;
-}
-
-canvas {
-  display: block;
-  width: auto;
+  display: inline-block;
+  max-width: 320px;
+  max-height: 240px;
   margin: 0 auto;
   /* padding: 1%; */
 }
 
-video {
-  width: 100%;
+#video-placeholder {
+  display: flex;
+}
+
+canvas {
+  display: block;
+  margin: 0 auto;
+  /* padding: 1%; */
 }
 
 #info {
@@ -106,8 +106,6 @@ h2.prompt {
 
 button {
   background: rgba(255, 255, 255, 0.3);
-  /* background: rgb(255, 255, 255);
-  background: linear-gradient(0deg, rgba(255, 255, 255, 0.4) 0%, rgba(161, 161, 161, 1) 43%, rgba(102, 102, 102, 1) 75%); */
   background-repeat: no-repeat;
   color: black;
   border: none;
@@ -211,7 +209,6 @@ img {
 }
 
 /* modal content */
-
 .modal-content {
   position: fixed;
   bottom: 0;
@@ -240,10 +237,6 @@ img {
   padding: 1% 16px;
   height: 7vh;
   background-color: rgba(37, 36, 33, .75);
-}
-
-.modal-body {
-  /* padding-top: 1%; */
 }
 
 .modal-footer {

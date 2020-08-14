@@ -1,8 +1,11 @@
 // display video
 let capture;
-const button = document.getElementById('record');
-const vidParent = document.getElementById('video-placeholder');
+let blob;
 chunks = [];
+const recordButton = document.getElementById('record');
+const deleteButton = document.getElementById('delete');
+const submitButton = document.getElementById('submit');
+const vidParent = document.getElementById('video-placeholder');
 
 // Separate function to start video
 function startCapture() {
@@ -13,37 +16,11 @@ function startCapture() {
   // Place and size the video
   capture.parent('#video-placeholder');
   capture.size(320, 240);
-  // This fixes the echo you don't need to hear yourself?
   capture.elt.volume = 0;
 }
 
 function setup() {
   noCanvas();
-  // echo cancellation attempt 1
-  // capture = createCapture(VIDEO, {
-  //   video: true,
-  //   audio: true,
-  //   echoCancellancellation: true
-  // });
-
-  // echo cancellation attempt 2
-  // let constraints = {
-  //   video: {
-  //     mandatory: {
-
-  //       minWidth: 1280;
-  //       minHeight: 720;
-  //     },
-  //     optional: [{
-  //       maxFrameRate: 10;
-  //     }]
-  //   },
-  //    audio: {
-  //      echoCancellation: true
-  //    } 
-  // };
-
-  //   capture = createCapture(constraints, function(stream));
 }
 
 async function postToDatabase(blob) {
@@ -63,12 +40,7 @@ async function postToDatabase(blob) {
 // record video
 function record() {
   chunks.length = 0;
-  // let stream = document.querySelector('canvas').captureStream(30),
   let stream = capture.elt.srcObject;
-
-  // i can't seem to get it to record the actual video html element
-  // let stream = document.querySelector('#stream').captureStream(30),
-  // let stream = document.getElementById('stream').captureStream(30),
   recorder = new MediaRecorder(stream);
 
   recorder.ondataavailable = e => {
@@ -76,20 +48,24 @@ function record() {
       chunks.push(e.data);
     }
   };
+
   recorder.onstop = exportVideo;
-  button.onclick = e => {
+
+  recordButton.onclick = e => {
     recorder.stop();
-    button.textContent = 'start recording';
-    button.onclick = record;
+    recordButton.textContent = 'start recording';
+    recordButton.onclick = record;
   };
+
   recorder.start();
-  button.textContent = 'stop recording';
+
+  recordButton.textContent = 'stop recording';
 }
 
 // display video recording on webpage
 function exportVideo(e) {
   let blob = new Blob(chunks);
-  console.log(blob);
+  // console.log(blob);
   let vid = document.createElement('video');
   vid.id = 'recorded';
   vid.controls = true;
@@ -98,7 +74,20 @@ function exportVideo(e) {
   vid.src = videodata;
   postToDatabase(blob);
   // document.body.parent.appendChild(vid)
-  document.getElementById("video-placeholder").parentElement.appendChild(vid);
+  document.getElementById("recording").parentElement.appendChild(vid);
   vid.play();
 }
-button.onclick = record;
+recordButton.onclick = record;
+
+deleteButton.onclick = e => {
+  let unsatisfactoryTake = document.getElementById("recorded");
+  unsatisfactoryTake.remove();
+  deleteButton.textContent = 'successfully deleted!';
+};
+
+submitButton.onclick = e => {
+  console.log(blob);
+  postToDatabase(blob);
+  submitButton.textContent = 'successfully submitted!';
+};
+

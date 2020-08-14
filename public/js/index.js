@@ -91,7 +91,7 @@ function init() {
             side: THREE.DoubleSide
           })
         );
-   
+
         videoShape.position.x = (Math.random() - 0.5) * 5;
         videoShape.position.y = (Math.random() - 0.5) * 5;
         // videoShape.position.z = ( Math.random() - 0.5 ) * 10;
@@ -122,12 +122,12 @@ function setUpVideo(inSrc) {
   return videlem;
 }
 
-function draw() {
-  requestAnimationFrame(draw);
-  renderer.render(scene, camera);
-  // controls.update();
-  // camera.position.x += 0.01;
-}
+// function draw() {
+//   requestAnimationFrame(draw);
+//   renderer.render(scene, camera);
+//   // controls.update();
+//   // camera.position.x += 0.01;
+// }
 
 function createTextureFromVideoElement(video) {
   let texture = new THREE.VideoTexture(video);

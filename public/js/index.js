@@ -59,14 +59,22 @@ function init() {
       dkCharacter.scale.set(4.5, 4.5, 4.5);
 
       // Depthkit video playback control
-      depthkit.video.muted = "muted"; // Necessary for auto-play in chrome now
+      // Muting necessary for auto-play in chrome
+      depthkit.video.muted = "muted";
       depthkit.setLoop(true);
       depthkit.play();
 
+      function playDK() {
+        depthkit.pause();
+      }
+      
       // Add the character to the scene
       scene.add(character);
     }
   );
+
+
+
 
   // Use fetch() to request list of videos in database
   // this could be revised to use async and await

@@ -74,23 +74,23 @@ function init() {
   );
 
   // temporary video for Ari's soundscape
-  let video1 = setUpVideo(
-    "../upload/Huntley_1099240_Screener.webm"
-    // "https://cdn.glitch.com/39b7ba95-a96e-44aa-9110-0d917a3046ad%2FpartA_Trim.mp4?v=1596058682930"
-  );
+  // let video1 = setUpVideo(
+  //   "../upload/Huntley_1099240_Screener.webm"
+  //   // "https://cdn.glitch.com/39b7ba95-a96e-44aa-9110-0d917a3046ad%2FpartA_Trim.mp4?v=1596058682930"
+  // );
 
-  let texture1 = createTextureFromVideoElement(video1);
+  // let texture1 = createTextureFromVideoElement(video1);
 
-  temporaryVideoShape = new THREE.Mesh(
-    new THREE.SphereGeometry(0.25, 0.25, 0.25),
-    new THREE.MeshBasicMaterial({ map: texture1, side: THREE.DoubleSide })
-  );
+  // temporaryVideoShape = new THREE.Mesh(
+  //   new THREE.SphereGeometry(0.25, 0.25, 0.25),
+  //   new THREE.MeshBasicMaterial({ map: texture1, side: THREE.DoubleSide })
+  // );
 
-  temporaryVideoShape.position.x = (Math.random() - 0.5) * 5;
-  temporaryVideoShape.position.set(3, 1, -1);
-  temporaryVideoShape.scale.set(2,2,2);
+  // temporaryVideoShape.position.x = (Math.random() - 0.5) * 5;
+  // temporaryVideoShape.position.set(3, 1, -1);
+  // temporaryVideoShape.scale.set(2,2,2);
 
-  scene.add(temporaryVideoShape);
+  // scene.add(temporaryVideoShape);
 
   // Add videos from database
   // Use fetch() to request list of videos in database
@@ -110,7 +110,7 @@ function init() {
         // Create a texture for each video
         const texture = createTextureFromVideoElement(videos[i]);
         videoShape = new THREE.Mesh(
-          new THREE.CubeGeometry(0.5, 0.5, 0.25),
+          new THREE.CubeGeometry(0.5, 0.5, 0.2),
           new THREE.MeshBasicMaterial({
             map: texture,
             side: THREE.DoubleSide

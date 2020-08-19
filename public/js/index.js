@@ -44,10 +44,14 @@ function init() {
   let gridHelper = new THREE.GridHelper(50, 50);
   // scene.add(gridHelper);
 
+  // Shaders
+  let uniforms = {
+
+
+  }
+
   depthkit = new Depthkit();
   depthkit.load(
-    // "https://cdn.glitch.com/88ddef19-31c1-4772-bdd6-29b3a07403ad%2FTAKE_07_30_01_45_31_Export_07_30_04_09_05.txt?v=1596219873183",
-    // "https://cdn.glitch.com/88ddef19-31c1-4772-bdd6-29b3a07403ad%2FTAKE_07_30_01_45_31_Export_07_30_04_09_05.webm?v=1596219863242",
     "../assets/character/prof.txt",
     "../assets/character/prof.webm",
     dkCharacter => {
@@ -125,7 +129,6 @@ function init() {
       }
 
     });
-  // );
 
   // let element = setUpVideo();
   window.addEventListener("resize", onWindowResize, false);
@@ -149,12 +152,10 @@ function setUpVideo(inSrc) {
   return videlem;
 }
 
-// function draw() {
-//   requestAnimationFrame(draw);
-//   renderer.render(scene, camera);
-//   // controls.update();
-//   // camera.position.x += 0.01;
-// }
+function vertexShaderhader() {
+
+
+}
 
 function createTextureFromVideoElement(video) {
   let texture = new THREE.VideoTexture(video);

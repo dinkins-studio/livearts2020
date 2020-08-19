@@ -39,9 +39,13 @@ async function postToDatabase(blob) {
 
 // record video
 function record() {
+  const elt = document.getElementById("recorded");
+  if (elt) elt.remove();
+
   chunks.length = 0;
   let stream = capture.elt.srcObject;
   recorder = new MediaRecorder(stream);
+
 
   recorder.ondataavailable = e => {
     if (e.data.size) {
@@ -53,7 +57,7 @@ function record() {
 
   recordButton.onclick = e => {
     recorder.stop();
-    recordButton.textContent = 'start recording';
+    recordButton.textContent = 'record again';
     recordButton.onclick = record;
   };
 
@@ -64,7 +68,7 @@ function record() {
 
 // display video recording on webpage
 function exportVideo(e) {
-  let blob = new Blob(chunks);
+  blob = new Blob(chunks);
   // console.log(blob);
   let vid = document.createElement('video');
   vid.id = 'recorded';
@@ -72,8 +76,11 @@ function exportVideo(e) {
   let videodata = URL.createObjectURL(blob);
   console.log(videodata);
   vid.src = videodata;
-  postToDatabase(blob);
+  // postToDatabase(blob);
   // document.body.parent.appendChild(vid)
+
+
+
   document.getElementById("recording").parentElement.appendChild(vid);
   vid.play();
 }
@@ -90,4 +97,3 @@ submitButton.onclick = e => {
   postToDatabase(blob);
   submitButton.textContent = 'successfully submitted!';
 };
-

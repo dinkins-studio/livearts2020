@@ -58,43 +58,20 @@ function init() {
       character = dkCharacter;
 
       // Position and rotation adjustments
-      dkCharacter.rotation.set(Math.PI - 3.5, 3, Math.PI / -2.0);
-      dkCharacter.position.set(-1.5, 1.5, .85);
-      dkCharacter.scale.set(4.5, 4.5, 4.5);
+      character.rotation.set(Math.PI - 3.5, 3, Math.PI / -2.0);
+      character.position.set(-1.5, 1.5, .85);
+      character.scale.set(4.5, 4.5, 4.5);
 
       // Depthkit video playback control
       // Muting necessary for auto-play in chrome
-      depthkit.video.muted = "muted";
+      // depthkit.video.muted = "muted";
       depthkit.setLoop(true);
-      depthkit.play();
-
-      function playDK() {
-        depthkit.pause();
-      }
+      // depthkit.play();
 
       // Add the character to the scene
       scene.add(character);
     }
   );
-
-  // temporary video for Ari's soundscape
-  // let video1 = setUpVideo(
-  //   "../upload/Huntley_1099240_Screener.webm"
-  //   // "https://cdn.glitch.com/39b7ba95-a96e-44aa-9110-0d917a3046ad%2FpartA_Trim.mp4?v=1596058682930"
-  // );
-
-  // let texture1 = createTextureFromVideoElement(video1);
-
-  // temporaryVideoShape = new THREE.Mesh(
-  //   new THREE.SphereGeometry(0.25, 0.25, 0.25),
-  //   new THREE.MeshBasicMaterial({ map: texture1, side: THREE.DoubleSide })
-  // );
-
-  // temporaryVideoShape.position.x = (Math.random() - 0.5) * 5;
-  // temporaryVideoShape.position.set(3, 1, -1);
-  // temporaryVideoShape.scale.set(2,2,2);
-
-  // scene.add(temporaryVideoShape);
 
   // Add videos from database
   // Use fetch() to request list of videos in database
@@ -130,7 +107,6 @@ function init() {
 
     });
 
-  // let element = setUpVideo();
   window.addEventListener("resize", onWindowResize, false);
   window.addEventListener("keydown", onKeyDown, false);
   render();
@@ -152,8 +128,11 @@ function setUpVideo(inSrc) {
   return videlem;
 }
 
-function vertexShaderhader() {
+function playDK() {
+  depthkit.play();
+}
 
+function vertexShaderhader() {
 
 }
 

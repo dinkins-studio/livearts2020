@@ -3,7 +3,7 @@ let capture;
 let blob;
 chunks = [];
 const recordButton = document.getElementById('record');
-const deleteButton = document.getElementById('delete');
+// const deleteButton = document.getElementById('delete');
 const submitButton = document.getElementById('submit');
 const privacyButton = document.getElementById('privacy');
 const vidParent = document.getElementById('video-placeholder');
@@ -87,11 +87,11 @@ function exportVideo(e) {
 }
 recordButton.onclick = record;
 
-deleteButton.onclick = e => {
-  let unsatisfactoryTake = document.getElementById("recorded");
-  unsatisfactoryTake.remove();
-  deleteButton.textContent = 'deleted!';
-};
+// deleteButton.onclick = e => {
+//   let unsatisfactoryTake = document.getElementById("recorded");
+//   unsatisfactoryTake.remove();
+//   deleteButton.textContent = 'deleted!';
+// };
 
 submitButton.onclick = e => {
   console.log(blob);
@@ -100,5 +100,5 @@ submitButton.onclick = e => {
 };
 
 privacyButton.onclick = e => {
-  window.alert("By clicking “submit” you grant this website permission to save the video you upload to a database managed by Stephanie Dinkins Studio in order to display your video on this website.");
+  window.alert("By clicking “submit” you grant this website permission to display your video on this website.");
 };

@@ -6,5 +6,8 @@
     "multer": "^1.4.2",
     "nedb": "^1.8.0",
     "start": "^5.1.0"
+  },
+  "scripts": {
+    "build": "npm install && node index.js"
   }
 }

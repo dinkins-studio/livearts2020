@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>#Say</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    <!-- Origin Trial Token, feature = WebVR (For Chrome M59+), origin = https://juniorxsound.github.io, expires = 2017-08-16 -->
+
+    <link rel="apple-touch-icon" sizes="180x180" href="public/assets/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="public/assets/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="public/assets/images/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+
+    <meta http-equiv="origin-trial" data-feature="WebVR (For Chrome M59+)" data-expires="2017-08-16"
+        content="Ahwo2B0LoM2bLB015eLJ4CAvJa0xF9VVn0FO1/AaYfPklvBUwcfYFkXKenD57vhGo1WQt9Hg9IFauhKdRgLN8w8AAABreyJvcmlnaW4iOiJodHRwczovL2p1bmlvcnhzb3VuZC5naXRodWIuaW86NDQzIiwiZmVhdHVyZSI6IldlYlZSMS4xIiwiZXhwaXJ5IjoxNTAyOTEyNTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZX0=" />
+    <link rel="stylesheet" type="text/css" href="assets/css/style.css" />
+
+</head>
+
+    <body onclick="playDK()">
+    <!--    <element ondblclick="stopDK()">    <body onclick="playDK()", ondblclick="stopDK()"stopDK()">-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/98/three.min.js"></script>
+    <script src="js/OrbitControls.js"></script>
+    <script src="js/depthkit.js"></script>
+
+
+    <div id="info">
+        <button id="submit-video" class="object"> </button>
+        <button id="next" class="artifact"> </button>
+
+        <div id="video-prompt" class="modal">
+
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span class="close">&times;</span>
+                    <h2 class="prompt"> What do you have to say? </h2>
+                </div>
+
+                <div class="modal-body">
+                    <br>
+                    <div id="video-placeholder">
+                        <div id="recording"> </div>
+                    </div>
+                    <br>
+                </div>
+
+                <div class="modal-body">
+
+                    <div class="video-recording-suite">
+
+                        <div class="button-container">
+
+                            <button id="delete" class="delete-button"> delete </button>
+                            <button id="record" class="record-button"> record </button>
+                            <button id="submit" class="submit-button"> submit </button>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <h3 class="disclaimer">Privacy Notice</h3>
+                    <p class="disclaimer">
+                        By clicking “submit” you grant this website permission to save the video you upload to a
+                        database managed by Stephanie Dinkins Studio in order to display your video on this website.
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+    <script src="js/layout.js"></script>
+    <script src="js/video.js"></script>
+    <script id="vs" type="x-shader/x-vertex">
+
+    #define GLSLIFY 1
+    uniform float mindepth;
+    uniform float maxdepth;
+
+    uniform float width;
+    uniform float height;
+
+    uniform bool isPoints;
+    uniform float pointSize;
+
+    uniform float time;
+
+    uniform vec2 focalLength;
+    uniform vec2 principalPoint;
+    uniform vec2 imageDimensions;
+    uniform vec4 crop;
+    uniform vec2 meshDensity;
+    uniform mat4 extrinsics;
+
+    varying vec3 vNormal;
+    varying vec3 vPos;
+
+    uniform sampler2D map;
+
+    varying float visibility;
+    varying vec2 vUv;
+
+    const float _DepthSaturationThreshhold = 0.5; //a given pixel whose saturation is less than half will be culled (old default was .5)
+    const float _DepthBrightnessThreshold = 0.5; //a given pixel whose brightness is less than half will be culled (old default was .9)
+    const float  _Epsilon = .03;
+
+    vec3 rgb2hsv(vec3 c)
+    {
+        vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
+        vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));
+        vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));
+
+        float d = q.x - min(q.w, q.y);
+        return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + _Epsilon)), d / (q.x + _Epsilon), q.x);
+    }
+
+    float depthForPoint(vec2 texturePoint)
+    {
+        vec4 depthsample = texture2D(map, texturePoint);
+        vec3 depthsamplehsv = rgb2hsv(depthsample.rgb);
+        return depthsamplehsv.g > _DepthSaturationThreshhold && depthsamplehsv.b > _DepthBrightnessThreshold ? depthsamplehsv.r : 0.0;
+    }
+
+    void main() {
+        vec4 texSize = vec4(1.0 / width, 1.0 / height, width, height);
+
+        vec2 centerpix = texSize.xy * .5;
+        vec2 textureStep = 1.0 / meshDensity;
+        vec2 basetex = floor(position.xy * textureStep * texSize.zw) * texSize.xy;
+        vec2 imageCoordinates = crop.xy + (basetex * crop.zw);
+        basetex.y = 1.0 - basetex.y;
+
+        vec2 depthTexCoord = basetex * vec2(1.0, 0.5) + centerpix;
+        vec2 colorTexCoord = basetex * vec2(1.0, 0.5) + vec2(0.0, 0.5) + centerpix;
+
+        vUv = colorTexCoord;
+        vPos = (modelMatrix * vec4(position, 1.0 )).xyz;
+        vNormal = normalMatrix * normal;
+
+        //check neighbors
+        //texture coords come in as [0.0 - 1.0] for this whole plane
+        float depth = depthForPoint(depthTexCoord);
+
+        float neighborDepths[8];
+        neighborDepths[0] = depthForPoint(depthTexCoord + vec2(0.0,  textureStep.y));
+        neighborDepths[1] = depthForPoint(depthTexCoord + vec2(textureStep.x, 0.0));
+        neighborDepths[2] = depthForPoint(depthTexCoord + vec2(0.0, -textureStep.y));
+        neighborDepths[3] = depthForPoint(depthTexCoord + vec2(-textureStep.x, 0.0));
+        neighborDepths[4] = depthForPoint(depthTexCoord + vec2(-textureStep.x, -textureStep.y));
+        neighborDepths[5] = depthForPoint(depthTexCoord + vec2(textureStep.x,  textureStep.y));
+        neighborDepths[6] = depthForPoint(depthTexCoord + vec2(textureStep.x, -textureStep.y));
+        neighborDepths[7] = depthForPoint(depthTexCoord + vec2(-textureStep.x,  textureStep.y));
+
+        visibility = 1.0;
+        int numDudNeighbors = 0;
+        //search neighbor verts in order to see if we are near an edge
+        //if so, clamp to the surface closest to us
+        if (depth < _Epsilon || (1.0 - depth) < _Epsilon)
+        {
+            // float depthDif = 1.0;
+            float nearestDepth = 1.0;
+            for (int i = 0; i < 8; i++)
+            {
+                float depthNeighbor = neighborDepths[i];
+                if (depthNeighbor >= _Epsilon && (1.0 - depthNeighbor) > _Epsilon)
+                {
+                    // float thisDif = abs(nearestDepth - depthNeighbor);
+                    if (depthNeighbor < nearestDepth)
+                    {
+                        // depthDif = thisDif;
+                        nearestDepth = depthNeighbor;
+                    }
+                }
+                else
+                {
+                    numDudNeighbors++;
+                }
+            }
+
+            depth = nearestDepth;
+            visibility = 0.8;
+
+            // blob filter
+            if (numDudNeighbors > 6)
+            {
+                visibility = 0.0;
+            }
+        }
+
+        // internal edge filter  commenting out makes image go away
+      float maxDisparity = 0.0;
+        for (int i = 0; i < 8; i++)
+        {
+            float depthNeighbor = neighborDepths[i];
+            if (depthNeighbor >= _Epsilon && (1.0 - depthNeighbor) > _Epsilon)
+            {
+                maxDisparity = max(maxDisparity, abs(depth - depthNeighbor));
+            }
+        }
+        visibility *= 1.0 - maxDisparity;
+
+        float z = depth * (maxdepth - mindepth) + mindepth;
+        vec4 worldPos = extrinsics * vec4((imageCoordinates * imageDimensions - principalPoint) * z / focalLength, z, 1.0);
+        worldPos.w = 1.0;
+        visibility *= sin(worldPos.x * 700.) + 0.5;
+        gl_Position = projectionMatrix * modelViewMatrix * worldPos;
+    }
+
+    </script>
+    <script id="fs" type="x-shader/x-fragment">
+
+          uniform sampler2D map;
+          uniform float opacity;
+
+          varying float visibility;
+          varying vec2 vUv;
+
+        /void main() {
+
+            //  if ( visibility < 0.75 ) discard;
+
+            //  vec4 color = texture2D( map, vUv + vec2(0.0, 0.1) );
+            //  color.w = opacity;
+
+            //  gl_FragColor = color;
+
+          }
+    </script>
+
+    <script src="js/index.js"></script>
+</body>
+
+</html>

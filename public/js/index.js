@@ -53,7 +53,7 @@ function init() {
   depthkit = new Depthkit();
   depthkit.load(
     "../assets/character/prof.txt",
-    "../assets/character/prof.webm",
+    "../assets/character/prof1.webm",
     dkCharacter => {
       character = dkCharacter;
 

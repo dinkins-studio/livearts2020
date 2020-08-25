@@ -232,9 +232,12 @@ img {
 }
 
 .close {
-  color: black;
-  float: right;
-  font-size: 28px;
+  color: rgba(251, 238, 31, .75);
+  /* float: right; */
+  position: absolute;
+  top: 1%;
+  left: 1%;
+  font-size: 3vw;
   font-weight: bold;
 }
 

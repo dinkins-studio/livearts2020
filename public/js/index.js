@@ -1,16 +1,23 @@
 //Some general Three.js components
-let renderer, scene, camera, controls;
-
+let renderer, controls;
+let camera, cameraTarget, cameraDummy;
+let scene, scene2;
 let depthkit;
 // Depthkit character
 let character;
-let rotationStep = Math.PI / 9.0;
-
+//let rotationStep = Math.PI / 9.0;
+let rotation =0, rotationTarget = 0;
 // custom video layout
 let videoShape1, videoShape2;
 let videoShapeXPos = -3.25;
 
 let videoSrcList = [];
+
+let ray, projector, mouse;
+//let videos,
+let objects;
+
+var MOUSEOVERED = null, CLICKED = null;
 
 init();
 
@@ -39,7 +46,11 @@ function init() {
   controls = new THREE.OrbitControls(camera);
   controls.target.set(0, 0.75, 0);
   camera.lookAt(controls.target);
-
+//add from Depthkitjs
+  ray = new THREE.Ray();
+  projector = new THREE.Projector();
+  mouse = new THREE.Vector2();
+//end add
   // A grid helper as a floor reference
   let gridHelper = new THREE.GridHelper(50, 50);
   // scene.add(gridHelper);

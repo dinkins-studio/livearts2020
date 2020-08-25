@@ -1,28 +1,26 @@
 //Some general Three.js components
-let renderer, controls;
-let camera, cameraTarget, cameraDummy;
-let scene, scene2;
-let depthkit;
-// Depthkit character
-let character;
-//let rotationStep = Math.PI / 9.0;
-let rotation =0, rotationTarget = 0;
+var renderer, scene, camera, controls;
+
+//DepthKit character
+
+
+var character;
+let rotationStep = Math.PI / 9.0;
+//let rotation =0, rotationTarget = 0;
+
 // custom video layout
 let videoShape1, videoShape2;
 let videoShapeXPos = -3.25;
 
-let videoSrcList = [];
-
 let ray, projector, mouse;
 //let videos,
 let objects;
-
-var MOUSEOVERED = null, CLICKED = null;
+let idle; //sd added
 
 init();
 
 function init() {
-  // Setup renderer
+  //Setup renderer
   renderer = new THREE.WebGLRenderer();
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
@@ -31,58 +29,87 @@ function init() {
   // Setup scene
   scene = new THREE.Scene();
   scene.background = new THREE.Color(0x000000);
-  scene.fog = new THREE.Fog(0x301934, 0.0, 10.0);
+  //scene.fog = new THREE.Fog(0x17348D, 0.0, 40.0);
 
   // Setup camera
   camera = new THREE.PerspectiveCamera(
-    75,
+40,
     window.innerWidth / window.innerHeight,
     0.01,
-    20
+  1000
   );
-  camera.position.set(0, 2, 3);
+  camera.position.set(0, 0, 100);
 
   // Setup controls
   controls = new THREE.OrbitControls(camera);
-  controls.target.set(0, 0.75, 0);
+  controls.target.set(0, 0, 0);  // orig (0, 0.75, 0)
   camera.lookAt(controls.target);
-//add from Depthkitjs
-  ray = new THREE.Ray();
-  projector = new THREE.Projector();
-  mouse = new THREE.Vector2();
-//end add
+
   // A grid helper as a floor reference
-  let gridHelper = new THREE.GridHelper(50, 50);
-  // scene.add(gridHelper);
+ var gridHelper = new THREE.GridHelper(25, 25);
+ scene.add(gridHelper);
 
-  // Shaders
-  let uniforms = {
-
-
-  }
-
-  depthkit = new Depthkit();
-  depthkit.load(
-    "../assets/character/prof.txt",
-    "../assets/character/prof.webm",
-    dkCharacter => {
-      character = dkCharacter;
-
-      // Position and rotation adjustments
-      character.rotation.set(Math.PI - 3.5, 3, Math.PI / -2.0);
-      character.position.set(-1.5, 1.5, .85);
-      character.scale.set(4.5, 4.5, 4.5);
-
-      // Depthkit video playback control
-      // Muting necessary for auto-play in chrome
-      // depthkit.video.muted = "muted";
-      depthkit.setLoop(true);
-      // depthkit.play();
-
-      // Add the character to the scene
-      scene.add(character);
-    }
+  //DepthKit(mesh/wire/points rendering, path to txt, path to video)
+  character = new DepthKit(
+    "point",
+    "https://cdn.glitch.com/6faea614-1ebe-4ba0-957e-9b31be8b6ba8%2FTAKE_Bob01_02_16_12_38_Export_06_22_23_02_49.txt?v=1593111510918",
+    "../assets/character/prof.webm"
+    // "https://cdn.glitch.com/6faea614-1ebe-4ba0-957e-9b31be8b6ba8%2FBob%20Key_v3%20-%20depthkit%20-%20depthandcolorcrop.mp4?v=1593111497768"
+    // "../assets/character/prof.txt",
+    // "../assets/character/prof.webm"
   );
+
+  // Position and rotation adjustments
+
+  character.position.set(3, 3, 10);
+  character.scale.set(30, 30, 30);
+  character.rotateY((Math.PI / 2) * 2);
+  character.rotateZ(-Math.PI / 2);
+
+  //character.rotation.set(Math.PI - 3.5, 3, Math.PI / -2.0);
+
+  //Depthkit methods
+  character.depthkit.setLoop( false );
+
+  //Add the character to the scene
+  scene.add(character);
+
+//audio
+// create an AudioListener and add it to the camera
+var listener = new THREE.AudioListener();
+camera.add( listener );
+
+// create a global audio source
+var sound = new THREE.Audio( listener );
+
+// load a sound and set it as the Audio object's buffer
+var audioLoader = new THREE.AudioLoader();
+audioLoader.load( 'public/audio/pagejamq.ogg', function( buffer ) {
+	sound.setBuffer( buffer );
+	sound.setLoop( true );
+	sound.setVolume( 0.5 );
+	sound.play();
+});
+
+  // temporary video for Ari's soundscape
+  let video1 = setUpVideo(
+
+    "../upload/Huntley_1099240_Screener.webm"
+    // "https://cdn.glitch.com/39b7ba95-a96e-44aa-9110-0d917a3046ad%2FpartA_Trim.mp4?v=1596058682930"
+  );
+
+  let texture1 = createTextureFromVideoElement(video1);
+
+  temporaryVideoShape = new THREE.Mesh(
+    new THREE.SphereGeometry(0.25, 1.00, 0.25),
+    new THREE.MeshBasicMaterial({ map: texture1, side: THREE.DoubleSide })
+  );
+
+  temporaryVideoShape.position.x = (Math.random() - 0.5) * 5;
+  temporaryVideoShape.position.set(3, 1, -1);
+  temporaryVideoShape.scale.set(2, 2, 2);
+
+  scene.add(temporaryVideoShape);
 
   // Add videos from database
   // Use fetch() to request list of videos in database
@@ -102,7 +129,7 @@ function init() {
         // Create a texture for each video
         const texture = createTextureFromVideoElement(videos[i]);
         videoShape = new THREE.Mesh(
-          new THREE.CubeGeometry(0.5, 0.5, 0.2),
+          new THREE.CubeGeometry(0.65, 0.7, 0.7),
           new THREE.MeshBasicMaterial({
             map: texture,
             side: THREE.DoubleSide
@@ -115,12 +142,15 @@ function init() {
 
         scene.add(videoShape);
       }
-
     });
 
   window.addEventListener("resize", onWindowResize, false);
-  window.addEventListener("keydown", onKeyDown, false);
+
   render();
+}
+
+function playDK() {
+  character.depthkit.play();
 }
 
 function setUpVideo(inSrc) {
@@ -131,20 +161,20 @@ function setUpVideo(inSrc) {
   videlem.appendChild(sourceMP4);
 
   videlem.autoplay = true;
-  videlem.muted = true;
-  videlem.setAttribute("crossorigin", "anonymous"); // i think this will not be not be needed if you have a server
+  videlem.muted = false;
+  videlem.volume = 0.03; //sd add volume
+  videlem.setAttribute("crossorigin", "anonymous");
   videlem.style.display = "none"; // hide html video element
   videlem.load();
-  videlem.play();
+  videlem.play;
   return videlem;
-}
 
-function playDK() {
-  depthkit.play();
-}
+  //sd add trying to make small video play from begingin on click
 
-function vertexShaderhader() {
-
+  //function restartVidelem ()
+  //{onclick = videlem.pause();
+    //videlem.currentTime = 0;
+    //videlem.play();}
 }
 
 function createTextureFromVideoElement(video) {
@@ -168,43 +198,9 @@ function onWindowResize() {
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 
-function onKeyDown(event) {
-  switch (event.keyCode) {
-    case 49: // key '1'
-      depthkit.setMeshScalar(1);
-      break;
-    case 50: // key '2'
-      depthkit.setMeshScalar(2);
-      break;
-    case 51: // key '3'
-      depthkit.setMeshScalar(3);
-      break;
-    case 81: // key 'q'
-      character.rotation.x += rotationStep;
-      break;
-    case 87: // key 'w'
-      character.rotation.x -= rotationStep;
-      break;
-    case 65: // key 'a'
-      character.rotation.y += rotationStep;
-      break;
-    case 83: // key 's'
-      character.rotation.y -= rotationStep;
-      break;
-    case 90: // key 'z'
-      character.rotation.z += rotationStep;
-      break;
-    case 88: // key 'x'
-      character.rotation.z -= rotationStep;
-      break;
 
-    default:
-      scene.updateMatrixWorld();
 
-      var v = new THREE.Vector3();
-      v.setFromMatrixPosition(character.matrixWorld);
-      console.log(v);
+// onMouseClick() {
 
-      return;
-  }
-}
+//   character.depthkit.play();
+// }

@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>DepthKit - Simple example using Three.js</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <!-- Origin Trial Token, feature = WebVR (For Chrome M59+), origin = https://juniorxsound.github.io, expires = 2017-08-16 -->
+    <meta
+      http-equiv="origin-trial"
+      data-feature="WebVR (For Chrome M59+)"
+      data-expires="2017-08-16"
+      content="Ahwo2B0LoM2bLB015eLJ4CAvJa0xF9VVn0FO1/AaYfPklvBUwcfYFkXKenD57vhGo1WQt9Hg9IFauhKdRgLN8w8AAABreyJvcmlnaW4iOiJodHRwczovL2p1bmlvcnhzb3VuZC5naXRodWIuaW86NDQzIiwiZmVhdHVyZSI6IldlYlZSMS4xIiwiZXhwaXJ5IjoxNTAyOTEyNTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZX0="
+    />
+    <!-- <style>
+      body {
+        background: #000;
+        color: #fff;
+        padding: 0;
+        margin: 0;
+        overflow: hidden;
+        font-family: georgia;
+        text-align: center;
+      }
+
+      a {
+        color: skyblue;
+        text-decoration: none;
+      }
+
+      #info {
+        position: absolute;
+        width: 100%;
+      }
+      #depthkit-video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 20%;
+      }
+    </style> -->
+  </head>
+
+  <body onclick="playDK()">
+    <!--Three.js-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/98/three.min.js"></script>
+    <!-- Orbit Controls -->
+    <script src="OrbitControls.js"></script>
+    <!--DepthKit.js-->
+    <script src="depthkit.js"></script>
+
+    <div id="info">
+      <a href="http://depthkit.tv" target="_blank" rel="noopener"
+        >DepthKit.js</a
+      >
+      - Simple example using Three.js<br />
+      Written by <a href="http://orfleisher.com">juniorxsound</a><br />
+      <br />
+      click to play
+    </div>
+
+    <script id="vs" type="x-shader/x-vertex">
+
+#define GLSLIFY 1
+uniform float mindepth;
+uniform float maxdepth;
+
+uniform float width;
+uniform float height;
+
+uniform bool isPoints;
+uniform float pointSize;
+
+uniform float time;
+
+uniform vec2 focalLength;
+uniform vec2 principalPoint;
+uniform vec2 imageDimensions;
+uniform vec4 crop;
+uniform vec2 meshDensity;
+uniform mat4 extrinsics;
+
+varying vec3 vNormal;
+varying vec3 vPos;
+
+uniform sampler2D map;
+
+varying float visibility;
+varying vec2 vUv;
+
+const float _DepthSaturationThreshhold = 0.75; //a given pixel whose saturation is less than half will be culled (old default was .5)
+const float _DepthBrightnessThreshold = 0.5; //a given pixel whose brightness is less than half will be culled (old default was .9)
+const float  _Epsilon = .03;
+
+vec3 rgb2hsv(vec3 c)
+{
+    vec4 K = vec4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
+    vec4 p = mix(vec4(c.bg, K.wz), vec4(c.gb, K.xy), step(c.b, c.g));
+    vec4 q = mix(vec4(p.xyw, c.r), vec4(c.r, p.yzx), step(p.x, c.r));
+
+    float d = q.x - min(q.w, q.y);
+    return vec3(abs(q.z + (q.w - q.y) / (6.0 * d + _Epsilon)), d / (q.x + _Epsilon), q.x);
+}
+
+float depthForPoint(vec2 texturePoint)
+{
+    vec4 depthsample = texture2D(map, texturePoint);
+    vec3 depthsamplehsv = rgb2hsv(depthsample.rgb);
+    return depthsamplehsv.g > _DepthSaturationThreshhold && depthsamplehsv.b > _DepthBrightnessThreshold ? depthsamplehsv.r : 0.0;
+}
+
+void main() {
+    vec4 texSize = vec4(1.0 / width, 1.0 / height, width, height);
+
+    vec2 centerpix = texSize.xy * .5;
+    vec2 textureStep = 1.0 / meshDensity;
+    vec2 basetex = floor(position.xy * textureStep * texSize.zw) * texSize.xy;
+    vec2 imageCoordinates = crop.xy + (basetex * crop.zw);
+    basetex.y = 1.0 - basetex.y;
+
+    vec2 depthTexCoord = basetex * vec2(1.0, 0.5) + centerpix;
+    vec2 colorTexCoord = basetex * vec2(1.0, 0.5) + vec2(0.0, 0.5) + centerpix;
+
+    vUv = colorTexCoord;
+    vPos = (modelMatrix * vec4(position, 1.0 )).xyz;
+    vNormal = normalMatrix * normal;
+
+    //check neighbors
+    //texture coords come in as [0.0 - 1.0] for this whole plane
+    float depth = depthForPoint(depthTexCoord);
+
+    float neighborDepths[8];
+    neighborDepths[0] = depthForPoint(depthTexCoord + vec2(0.0,  textureStep.y));
+    neighborDepths[1] = depthForPoint(depthTexCoord + vec2(textureStep.x, 0.0));
+    neighborDepths[2] = depthForPoint(depthTexCoord + vec2(0.0, -textureStep.y));
+    neighborDepths[3] = depthForPoint(depthTexCoord + vec2(-textureStep.x, 0.0));
+    neighborDepths[4] = depthForPoint(depthTexCoord + vec2(-textureStep.x, -textureStep.y));
+    neighborDepths[5] = depthForPoint(depthTexCoord + vec2(textureStep.x,  textureStep.y));
+    neighborDepths[6] = depthForPoint(depthTexCoord + vec2(textureStep.x, -textureStep.y));
+    neighborDepths[7] = depthForPoint(depthTexCoord + vec2(-textureStep.x,  textureStep.y));
+
+    visibility = 1.0;
+    int numDudNeighbors = 0;
+    //search neighbor verts in order to see if we are near an edge
+    //if so, clamp to the surface closest to us
+    if (depth < _Epsilon || (1.0 - depth) < _Epsilon)
+    {
+        // float depthDif = 1.0;
+        float nearestDepth = 1.0;
+        for (int i = 0; i < 8; i++)
+        {
+            float depthNeighbor = neighborDepths[i];
+            if (depthNeighbor >= _Epsilon && (1.0 - depthNeighbor) > _Epsilon)
+            {
+                // float thisDif = abs(nearestDepth - depthNeighbor);
+                if (depthNeighbor < nearestDepth)
+                {
+                    // depthDif = thisDif;
+                    nearestDepth = depthNeighbor;
+                }
+            }
+            else
+            {
+                numDudNeighbors++;
+            }
+        }
+
+        depth = nearestDepth;
+        visibility = 0.9;
+
+        // blob filter
+        if (numDudNeighbors > 6)
+        {
+            visibility = 0.0;
+        }
+    }
+
+    // internal edge filter
+    float maxDisparity = 0.0;
+    for (int i = 0; i < 8; i++)
+    {
+        float depthNeighbor = neighborDepths[i];
+        if (depthNeighbor >= _Epsilon && (1.0 - depthNeighbor) > _Epsilon)
+        {
+            maxDisparity = max(maxDisparity, abs(depth - depthNeighbor));
+        }
+    }
+    visibility *= 1.0 - maxDisparity;
+
+    float z = depth * (maxdepth - mindepth) + mindepth;
+    vec4 worldPos = extrinsics * vec4((imageCoordinates * imageDimensions - principalPoint) * z / focalLength, z, 1.0);
+    worldPos.w = 1.0;
+    	visibility = hsl.z * 2.0;  //visibility *= sin(worldPos.x * 700.) + 0.5;
+    gl_Position = projectionMatrix * modelViewMatrix * worldPos;
+}
+
+// projection formula
+    vec3 xyz( float x, float y, float depth ) {
+      float z = depth * ( maxdepth - mindepth ) + mindepth;
+      return vec3( (x - principleX)  * z / focalX,
+             (y - principleY) * z / focalY,
+             -z );
+    }
+
+    void main() {
+
+      vUv = vec2 (position.x/imageWidth, .y/imageHeight);
+      vUv.y = vUv.y * 0.5;// + 0.5;
+
+      vec3 hsl = rgb2hsl( texture2D( map, vUv ).xyz );
+      vec4 pos = vec4( xyz( position.x, position.y, hsl.x ), 1.0 );
+      pos.z += 800.0;
+
+      visibility = hsl.z * 2.0;
+
+      gl_PointSize = 2.0;
+
+      gl_Position = projectionMatrix * modelViewMatrix * pos;
+}
+
+    </script>
+
+    <script id="fs" type="x-shader/x-fragment">
+
+      uniform sampler2D map;
+      uniform float opacity;
+
+      varying float visibility;
+      varying vec2 vUv;
+
+      void main() {
+
+      	if ( visibility < 0.75 ) discard;
+
+      	vec4 color = texture2D( map, vUv + vec2(0.0, 0.5) );
+      	color.w = opacity;
+
+      	gl_FragColor = color;
+
+      }
+    </script>
+
+    <script>
+      //Some general Three.js components
+      var renderer, scene, camera, controls;
+
+      //DepthKit character
+      var character;
+
+      init();
+
+      function init() {
+    //     //Setup renderer
+    //     renderer = new THREE.WebGLRenderer();
+    //     renderer.setPixelRatio(window.devicePixelRatio);
+    //     renderer.setSize(window.innerWidth, window.innerHeight);
+    //     document.body.appendChild(renderer.domElement);
+
+    //     // Setup scene
+    //     scene = new THREE.Scene();
+    //     scene.background = new THREE.Color(0x000000);
+    //     // Setup camera
+    //     camera = new THREE.PerspectiveCamera(
+    //       75,
+    //       window.innerWidth / window.innerHeight,
+    //       0.01,
+    //       100
+    //     );
+    //     camera.position.set(0, 2, 1);
+
+    //     // Setup controls
+    //     // controls = new THREE.OrbitControls( camera );
+
+    //     // A grid helper as a floor reference
+    //     var gridHelper = new THREE.GridHelper(10, 10);
+    //     scene.add(gridHelper);
+
+    //     //DepthKit(mesh/wire/points rendering, path to txt, path to video)
+    //     character = new DepthKit(
+    //       "point",
+    //       "https://cdn.glitch.com/6faea614-1ebe-4ba0-957e-9b31be8b6ba8%2FTAKE_Bob01_02_16_12_38_Export_06_22_23_02_49.txt?v=1593111510918",
+    //       "https://cdn.glitch.com/6faea614-1ebe-4ba0-957e-9b31be8b6ba8%2FBob%20Key_v3%20-%20depthkit%20-%20depthandcolorcrop.mp4?v=1593111497768"
+    //     );
+
+    //     //Position and rotation adjustments
+    //     //character.scale.set( 1, 1, 1 );
+    //     //character.position.set( -0.75, 1.1, 1.85 );
+    //     character.scale.set(15, 15, 15);
+    //     character.rotateY((Math.PI / 2) * 2);
+    //     character.rotateZ(-Math.PI / 2);
+    //     //Depthkit methods
+    //     character.depthkit.setLoop(true);
+
+    //     //Add the character to the scene
+    //     scene.add(character);
+
+    //     window.addEventListener("resize", onWindowResize, false);
+
+    //     render();
+    //   }
+
+    //   function playDK() {
+    //     character.depthkit.play();
+    //   }
+
+    //   function render() {
+    //     requestAnimationFrame(render);
+
+    //     renderer.render(scene, camera);
+    //   }
+
+    //   function onWindowResize() {
+    //     camera.aspect = window.innerWidth / window.innerHeight;
+    //     camera.updateProjectionMatrix();
+    //     renderer.setSize(window.innerWidth, window.innerHeight);
+    //   }
+
+      //     onMouseClick(){
+
+      //       			character.depthkit.play();
+      //     }
+    </script>
+  </body>
+</html>

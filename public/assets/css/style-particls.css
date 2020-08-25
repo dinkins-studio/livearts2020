@@ -1,0 +1,313 @@
+@font-face {
+  font-family: 'lincoln1';
+  src: url('fonts/lincoln-mitre/LincolnMITRE-LM5x7.otf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'lincoln2';
+  src: url('fonts/lincoln-mitre/LincolnMITRE-LM7x9.otf');
+  font-weight: normal;
+  font-style: normal;
+}
+
+*, ::after, ::before {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  font-size: 56.25%;
+}
+
+body {
+  background-color: black;
+  color: black;
+  font-family: 'lincoln1', Courier, monospace;
+  font-weight: 400;
+  font-style: normal;
+  font-size: 3rem;
+}
+
+video {
+  display: inline-block;
+  max-width: 320px;
+  max-height: 240px;
+  margin: 0 auto;
+  /* padding: 1%; */
+}
+
+#video-placeholder {
+  display: flex;
+}
+
+canvas {
+  display: block;
+  margin: 0 auto;
+  /* padding: 1%; */
+}
+
+#info {
+  position: absolute;
+  width: 100%;
+}
+
+#depthkit-video {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 20%;
+}
+{
+  color: black;
+}
+
+#vantajs {
+  position: absolute;
+  display: block;
+  min-width: 100;
+  min-height: 100vh;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+}
+
+
+h2.prompt {
+  font-family: 'lincoln2', Courier, monospace;
+  font-weight: bold;
+  font-size: 4rem;
+  height: 7vh;
+  color: rgba(251, 238, 31, .75);
+  text-align: center;
+}
+
+.disclaimer {
+  color: rgba(0, 0, 0, 100);
+  font-size: 1.5rem;
+}
+
+.disclaimer:first-child {
+  margin-top: 2.5%;
+}
+
+.disclaimer:last-child {
+  margin-bottom: 3%;
+}
+
+button {
+  cursor: pointer;
+  color: black;
+  border: none;
+  padding: 2%;
+  display: inline-block;
+  font-family: 'lincoln1', Courier, monospace;
+  font-weight: bold;
+  font-size: 1.25vw;
+  text-align: center;
+}
+
+.upload-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  right: 0;
+  margin-right: 10%;
+}
+
+.record-buttons {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  margin: 1%;
+  vertical-align: text-bottom;
+}
+
+.record-button {
+  background: rgba(194, 0, 8, .75);
+  width: 12vh;
+  height: 12vh;
+  border-radius: 100%;
+}
+
+.privacy-button, .delete-button {
+  background: rgba(66, 64, 66, .75);
+  width: 10vh;
+  height: 10vh;
+  margin: 5%;
+}
+
+.submit-button {
+  background: rgba(251, 238, 31, .75);
+  border-radius: 50%;
+  width: 12vw;
+  height: 10vh;
+  margin: 5%;
+  transform: rotate(5deg);
+}
+
+.object {
+  display: inline-block;
+  background-color: transparent;
+  background: url(../images/megaphone.gif) no-repeat 70%;
+  background-size: auto 100%;
+  background-position: 50%;
+  position: fixed;
+  bottom: 0.25%;
+  right: 1%;
+  width:20rem;
+  height: 18rem;
+  animation: nudge 2s infinite linear;
+  cursor: pointer;
+}
+
+.artifact {
+  display: inline-block;
+  background-color: transparent;
+  background: url(../images/megaphone.gif) no-repeat 70%;
+  background-size: auto 90%;
+  background-position: 50%;
+  position: fixed;
+  bottom: 10%;
+  left: 2%;
+  width: 10rem;
+  height: 10rem;
+  animation: rotate 8s infinite linear;
+  cursor: pointer;
+}
+
+@keyframes nudge {
+  50% {
+    transform: rotateZ(3deg);
+  }
+  100% {
+    transform: rotateZ(0deg);
+  }
+}
+
+@keyframes rotate {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateY(359deg);
+  }
+}
+
+img {
+  max-width: 100%;
+}
+
+/* modal bg */
+.modal {
+  display: none;
+  /* position: fixed; */
+  z-index: 1;
+  /* left: 0;
+  top: 0; */
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  /* background: rgb(0, 0, 0) */
+  background-color: rgba(0, 0, 0, 0.4);
+  -webkit-animation-name: fadeIn;
+  -webkit-animation-duration: 0.4s;
+  animation-name: fadeIn;
+  animation-duration: 0.4s;
+}
+
+.videos {
+  position: fixed;
+  bottom: 0;
+  left: 1%;
+  right: 1%;
+}
+
+/* modal content */
+.modal-content {
+  /* position: fixed;
+  bottom: 0; */
+  background-color: transparent;
+  /* background-color: rgba(255, 255, 255, 0.3); */
+  width: 100%;
+  -webkit-animation-name: slideIn;
+  -webkit-animation-duration: 0.4s;
+  animation-name: slideIn;
+  animation-duration: 0.4s
+}
+
+.close {
+  color: black;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover, .close:focus {
+  transform: rotate(10deg);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* .modal-header {
+  display: inline-block;
+  padding: 1% 16px;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  right: 50%;
+} */
+
+.modal-footer {
+  padding: 2px 16px;
+  background-color: rgba(83, 80, 82, .75);
+}
+
+/* modal animation */
+@-webkit-keyframes slideIn {
+  from {
+    bottom: -300px;
+    opacity: 0
+  }
+  to {
+    bottom: 0;
+    opacity: 1
+  }
+}
+
+@keyframes slideIn {
+  from {
+    bottom: -300px;
+    opacity: 0
+  }
+  to {
+    bottom: 0;
+    opacity: 1
+  }
+}
+
+@-webkit-keyframes fadeIn {
+  from {
+    opacity: 0
+  }
+  to {
+    opacity: 1
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0
+  }
+  to {
+    opacity: 1
+  }
+}

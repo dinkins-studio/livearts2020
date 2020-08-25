@@ -8,8 +8,9 @@
     <!-- Origin Trial Token, feature = WebVR (For Chrome M59+), origin = https://juniorxsound.github.io, expires = 2017-08-16 -->
 
     <link rel="apple-touch-icon" sizes="180x180" href="public/assets/images/apple-touch-icon.png">
-    <link rel="icon" type="image/x-icon" href="https://drive.google.com/drive/folders/1jELuofU2eiWYgu-pG_wb-O6YEBfK7x6T?usp=sharing">
->
+    <link rel="icon" type="image/x-icon"
+        href="https://drive.google.com/drive/folders/1jELuofU2eiWYgu-pG_wb-O6YEBfK7x6T?usp=sharing">
+
     <link rel="manifest" href="/site.webmanifest">
 
     <meta http-equiv="origin-trial" data-feature="WebVR (For Chrome M59+)" data-expires="2017-08-16"
@@ -18,65 +19,46 @@
 
 </head>
 
-
-
-  </div>
-
-
-    <body onclick="playDK()">
-    <!--    <element ondblclick="stopDK()">    <body onclick="playDK()", ondblclick="stopDK()"stopDK()">-->
+<body onclick="playDK()">
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/98/three.min.js"></script>
     <script src="js/OrbitControls.js"></script>
     <script src="js/depthkit.js"></script>
 
-
     <div id="info">
         <button id="submit-video" class="object"> </button>
-        <button id="next" class="artifact"> </button>
+        <!-- <button id="next" class="artifact"> </button> -->
 
         <div id="video-prompt" class="modal">
 
             <div class="modal-content">
-                <div class="modal-header">
                     <span class="close">&times;</span>
-                    <h2 class="prompt"> What do you have to say? </h2>
-                </div>
 
                 <div class="modal-body">
-                    <br>
-                    <div id="video-placeholder">
-                        <div id="recording"> </div>
-                    </div>
-                    <br>
-                </div>
-
-                <div class="modal-body">
-
-                    <div class="video-recording-suite">
-
-                        <div class="button-container">
-
-                            <button id="delete" class="delete-button"> delete </button>
-                            <button id="record" class="record-button"> record </button>
-                            <button id="submit" class="submit-button"> submit </button>
-
+                    <div class="videos">
+                        <h2 class="prompt"> What do you have to say? </h2>
+                        <div id="video-placeholder">
+                            <div id="recording"> </div>
                         </div>
                     </div>
+
                 </div>
 
-                <div class="modal-footer">
-                    <h3 class="disclaimer">Privacy Notice</h3>
-                    <p class="disclaimer">
-                        By clicking “submit” you grant this website permission to save the video you upload to a
-                        database managed by Stephanie Dinkins Studio in order to display your video on this website.
-                    </p>
+                <div class="modal-body">
+                    <div class="video-recording-suite">
+                        <div class="upload-buttons">
+                            <button id="submit" class="submit-button"> submit </button>
+                            <button id="privacy" class="privacy-button"> pri-vacy </button>
+                        </div>
+
+                        <div class="record-buttons">
+                            <button id="record" class="record-button"> rec </button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
         </div>
-
-
-    </div>
 
 
     <script src="js/layout.js"></script>
@@ -244,15 +226,15 @@
     <script src="js/howler.js"></script>
     <script>
 
-    var sound = new Howl({
-      src: ['...\audio\pagejamq.mp3'],
-      autoplay: true,
- loop: true,
- volume: 0.5,
-    });
-</script>
-<embed src="public\assets\audio\pagejamq.mp3" loop="true" autostart="true" width="0"
-        height="0">
+        var sound = new Howl({
+            src: ['/assets/audio/pagejamq.mp3'],
+            autoplay: false,
+            loop: true,
+            volume: 0.05,
+        });
+    </script>
+    
+    <embed src="/assets/audio/pagejamq.mp3" loop="true" autostart="true" width="0" height="0">
 </body>
 
 </html>

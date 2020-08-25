@@ -1,6 +1,3 @@
 .DS_Store
 node_modules
 myvideo*
-/character/**
-*prof.webm
-*prof.txt

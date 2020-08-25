@@ -47,20 +47,16 @@ function init() {
 
   // A grid helper as a floor reference
  var gridHelper = new THREE.GridHelper(25, 25);
- scene.add(gridHelper);
+//  scene.add(gridHelper);
 
   //DepthKit(mesh/wire/points rendering, path to txt, path to video)
   character = new DepthKit(
     "point",
     "https://cdn.glitch.com/6faea614-1ebe-4ba0-957e-9b31be8b6ba8%2FTAKE_Bob01_02_16_12_38_Export_06_22_23_02_49.txt?v=1593111510918",
-    "../assets/character/prof.webm"
-    // "https://cdn.glitch.com/6faea614-1ebe-4ba0-957e-9b31be8b6ba8%2FBob%20Key_v3%20-%20depthkit%20-%20depthandcolorcrop.mp4?v=1593111497768"
-    // "../assets/character/prof.txt",
-    // "../assets/character/prof.webm"
+    "../assets/character/prof-short.webm"
   );
 
   // Position and rotation adjustments
-
   character.position.set(3, 3, 10);
   character.scale.set(30, 30, 30);
   character.rotateY((Math.PI / 2) * 2);
@@ -68,13 +64,13 @@ function init() {
 
   //character.rotation.set(Math.PI - 3.5, 3, Math.PI / -2.0);
 
-  //Depthkit methods
+  // Depthkit methods
   character.depthkit.setLoop( false );
 
   //Add the character to the scene
   scene.add(character);
 
-//audio
+// audio
 // create an AudioListener and add it to the camera
 var listener = new THREE.AudioListener();
 camera.add( listener );
@@ -92,24 +88,24 @@ audioLoader.load( 'public/audio/pagejamq.ogg', function( buffer ) {
 });
 
   // temporary video for Ari's soundscape
-  let video1 = setUpVideo(
+  // let video1 = setUpVideo(
 
-    "../upload/Huntley_1099240_Screener.webm"
-    // "https://cdn.glitch.com/39b7ba95-a96e-44aa-9110-0d917a3046ad%2FpartA_Trim.mp4?v=1596058682930"
-  );
+  //   "../upload/Huntley_1099240_Screener.webm"
+  //   // "https://cdn.glitch.com/39b7ba95-a96e-44aa-9110-0d917a3046ad%2FpartA_Trim.mp4?v=1596058682930"
+  // );
 
-  let texture1 = createTextureFromVideoElement(video1);
+  // let texture1 = createTextureFromVideoElement(video1);
 
-  temporaryVideoShape = new THREE.Mesh(
-    new THREE.SphereGeometry(0.25, 1.00, 0.25),
-    new THREE.MeshBasicMaterial({ map: texture1, side: THREE.DoubleSide })
-  );
+  // temporaryVideoShape = new THREE.Mesh(
+  //   new THREE.SphereGeometry(0.25, 1.00, 0.25),
+  //   new THREE.MeshBasicMaterial({ map: texture1, side: THREE.DoubleSide })
+  // );
 
-  temporaryVideoShape.position.x = (Math.random() - 0.5) * 5;
-  temporaryVideoShape.position.set(3, 1, -1);
-  temporaryVideoShape.scale.set(2, 2, 2);
+  // temporaryVideoShape.position.x = (Math.random() - 0.5) * 5;
+  // temporaryVideoShape.position.set(3, 1, -1);
+  // temporaryVideoShape.scale.set(2, 2, 2);
 
-  scene.add(temporaryVideoShape);
+  // scene.add(temporaryVideoShape);
 
   // Add videos from database
   // Use fetch() to request list of videos in database

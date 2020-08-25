@@ -9,6 +9,6 @@
     "start": "^5.1.0"
   },
   "scripts": {
-    "build": "npm install && node index.js"
+    "start": "node index.js"
   }
 }

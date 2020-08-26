@@ -1,5 +1,5 @@
 //Some general Three.js components
-var renderer, scene, camera, controls;
+var renderer, scene, camera3, controls;
 
 //DepthKit character
 
@@ -32,22 +32,22 @@ function init() {
   //scene.fog = new THREE.Fog(0x17348D, 0.0, 40.0);
 
   // Setup camera
-  camera = new THREE.PerspectiveCamera(
-40,
+  camera3 = new THREE.PerspectiveCamera(
+    40,
     window.innerWidth / window.innerHeight,
     0.01,
-  1000
+    1000
   );
-  camera.position.set(0, 0, 100);
+  camera3.position.set(0, 0, 100);
 
   // Setup controls
-  controls = new THREE.OrbitControls(camera);
-  controls.target.set(0, 0, 0);  // orig (0, 0.75, 0)
-  camera.lookAt(controls.target);
+  controls = new THREE.OrbitControls(camera3);
+  controls.target.set(0, 0, 0); // orig (0, 0.75, 0)
+  camera3.lookAt(controls.target);
 
   // A grid helper as a floor reference
- var gridHelper = new THREE.GridHelper(25, 25);
-//  scene.add(gridHelper);
+  var gridHelper = new THREE.GridHelper(25, 25);
+  //  scene.add(gridHelper);
 
   //DepthKit(mesh/wire/points rendering, path to txt, path to video)
   character = new DepthKit(
@@ -65,27 +65,27 @@ function init() {
   //character.rotation.set(Math.PI - 3.5, 3, Math.PI / -2.0);
 
   // Depthkit methods
-  character.depthkit.setLoop( false );
+  character.depthkit.setLoop(false);
 
   //Add the character to the scene
   scene.add(character);
 
-// audio
-// create an AudioListener and add it to the camera
-var listener = new THREE.AudioListener();
-camera.add( listener );
+  // audio
+  // create an AudioListener and add it to the camera
+  var listener = new THREE.AudioListener();
+  camera3.add(listener);
 
-// create a global audio source
-var sound = new THREE.Audio( listener );
+  // create a global audio source
+  var sound = new THREE.Audio(listener);
 
-// load a sound and set it as the Audio object's buffer
-var audioLoader = new THREE.AudioLoader();
-audioLoader.load( 'public/audio/pagejamq.ogg', function( buffer ) {
-	sound.setBuffer( buffer );
-	sound.setLoop( true );
-	sound.setVolume( 0.5 );
-	sound.play();
-});
+  // load a sound and set it as the Audio object's buffer
+  var audioLoader = new THREE.AudioLoader();
+  audioLoader.load('public/audio/pagejamq.ogg', function (buffer) {
+    sound.setBuffer(buffer);
+    sound.setLoop(true);
+    sound.setVolume(0.5);
+    sound.play();
+  });
 
   // temporary video for Ari's soundscape
   // let video1 = setUpVideo(
@@ -169,8 +169,8 @@ function setUpVideo(inSrc) {
 
   //function restartVidelem ()
   //{onclick = videlem.pause();
-    //videlem.currentTime = 0;
-    //videlem.play();}
+  //videlem.currentTime = 0;
+  //videlem.play();}
 }
 
 function createTextureFromVideoElement(video) {
@@ -185,12 +185,12 @@ function createTextureFromVideoElement(video) {
 
 function render() {
   requestAnimationFrame(render);
-  renderer.render(scene, camera);
+  renderer.render(scene, camera3);
 }
 
 function onWindowResize() {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
+  camera3.aspect = window.innerWidth / window.innerHeight;
+  camera3.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 

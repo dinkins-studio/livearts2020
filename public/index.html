@@ -20,7 +20,7 @@
 </head>
 
 <body onclick="playDK()">
-    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/98/three.min.js"></script>
     <script src="js/OrbitControls.js"></script>
     <script src="js/depthkit.js"></script>
@@ -32,7 +32,7 @@
         <div id="video-prompt" class="modal">
 
             <div class="modal-content">
-                    <span class="close">&times;</span>
+                <span class="close">&times;</span>
 
                 <div class="modal-body">
                     <div class="videos">
@@ -61,13 +61,13 @@
         </div>
 
 
-    <script src="js/layout.js"></script>
-    <script src="js/video.js"></script>
+        <script src="js/layout.js"></script>
+        <script src="js/video.js"></script>
 
-    <script id="vs" type="x-shader/x-vertex">
+        <script id="vs" type="x-shader/x-vertex">
 
 
-    #define GLSLIFY 1
+            #define GLSLIFY 1
     uniform float mindepth;
     uniform float maxdepth;
 
@@ -202,9 +202,9 @@
     }
 
     </script>
-    <script id="fs" type="x-shader/x-fragment">
+        <script id="fs" type="x-shader/x-fragment">
 
-          uniform sampler2D map;
+            uniform sampler2D map;
           uniform float opacity;
 
           varying float visibility;
@@ -222,19 +222,18 @@
           }
     </script>
 
-    <script src="js/index.js"></script>
-    <script src="js/howler.js"></script>
-    <script>
+        <script src="js/index.js"></script>
+        <script src="js/howler.js"></script>
+        <script>
+            var sound = new Howl({
+                src: ['/assets/audio/pagejamq.mp3'],
+                autoplay: false,
+                loop: true,
+                volume: 0.05,
+            });
+        </script>
 
-        var sound = new Howl({
-            src: ['/assets/audio/pagejamq.mp3'],
-            autoplay: false,
-            loop: true,
-            volume: 0.05,
-        });
-    </script>
-    
-    <embed src="/assets/audio/pagejamq.mp3" loop="true" autostart="true" width="0" height="0">
+        <embed src="/assets/audio/pagejamq.mp3" loop="true" autostart="true" width="0" height="0">
 </body>
 
 </html>

@@ -3,6 +3,7 @@
   "license": "cc by nc 4.0",
   "dependencies": {
     "aws-sdk": "^2.739.0",
+    "dotenv": "^8.2.0",
     "express": "^4.16.4",
     "multer": "^1.4.2",
     "nedb": "^1.8.0",

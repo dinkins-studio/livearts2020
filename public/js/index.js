@@ -83,7 +83,10 @@ function init() {
       // Create an array of videos based on the JSON data
       let videos = [];
       json.forEach(elt => {
-        videos.push(setUpVideo(`upload/${elt.filename}`));
+        // aws
+        videos.push(setUpVideo(`${elt.url}`));
+        // file system
+        // videos.push(setUpVideo(`upload/${elt.filename}`));
       });
 
       // iterate through videoShapes to create grid, one ver video

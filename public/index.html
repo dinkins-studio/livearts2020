@@ -72,6 +72,7 @@ uniform sampler2D map;
 varying vec4 vPos;
 varying vec2 vUv;
 varying vec2 vUvDepth;
+varying float doIDiscard;
 
 float _DepthBrightnessThreshold = 0.5;  // per-pixel brightness threshold, used to refine edge geometry from eroneous edge depth samples
 #define BRIGHTNESS_THRESHOLD_OFFSET 0.01
@@ -98,7 +99,33 @@ float depthForPoint(vec2 texturePoint)
     vec3 depthsamplehsv = rgb2hsv(depthsample.rgb);
     return depthsamplehsv.b > _DepthBrightnessThreshold + BRIGHTNESS_THRESHOLD_OFFSET ? depthsamplehsv.r : 0.0;
 }
+float random (in vec2 _st) {
+    return fract(sin(dot(_st.xy,
+                         vec2(12.9898,78.233)))*
+        43758.5453123);
+}
 
+float rand(float n){return fract(sin(n) * 43758.5453123);}
+
+float noise(float p){
+	float fl = floor(p);
+  float fc = fract(p);
+	return mix(rand(fl), rand(fl + 1.0), fc);
+}
+float rand(vec2 n) { 
+	return fract(sin(dot(n, vec2(12.9898, 4.1414))) * 43758.5453);
+}
+
+float noise(vec2 p){
+	vec2 ip = floor(p);
+	vec2 u = fract(p);
+	u = u*u*(3.0-2.0*u);
+	
+	float res = mix(
+		mix(rand(ip),rand(ip+vec2(1.0,0.0)),u.x),
+		mix(rand(ip+vec2(0.0,1.0)),rand(ip+vec2(1.0,1.0)),u.x),u.y);
+	return res*res;
+}
 void main()
 {
     vec4 texSize = vec4(1.0 / width, 1.0 / height, width, height);
@@ -147,7 +174,16 @@ void main()
     vec2 proj = ortho * z / focalLength;
     vec4 worldPos = extrinsics *  vec4(proj.xy, z, 1.0);
     worldPos.w = 1.0;
+
     gl_Position =  projectionMatrix * modelViewMatrix * worldPos;
+        gl_PointSize = (10.- pow(worldPos.z*2.0,3.)) * 0.5;//distance(worldPos, vec4(0));
+        //gl_Position.z -= (noise(gl_PointSize) * 3.-gl_PointSize) * 0.05;
+if(noise(gl_Position.yz*100.) > 0.5){
+    gl_Position.z += (noise(gl_PointSize) * 2.-gl_PointSize);
+}
+// if(noise(gl_Position.yz) > 0.5){
+//     gl_Position.z += (noise(gl_PointSize) * 2.-gl_PointSize);
+// }
     vUv = colorTexCoord;
     vUvDepth = depthTexCoord;
     vPos = worldPos;//gl_Position.xyz;//(modelMatrix * vec4(gl_Position.xyz, 1.0)).xyz;//(modelMatrix * vec4(position, 1.0)).xyz;

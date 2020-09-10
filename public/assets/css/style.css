@@ -144,7 +144,7 @@ button {
 .object {
   display: inline-block;
   background-color: transparent;
-  background: url(../images/coin-collection-box1.png) no-repeat 50%;
+  background: url(../images/megaphone.gif) no-repeat 50%;
   background-size: auto 90%;
   background-position: 50%;
   position: fixed;

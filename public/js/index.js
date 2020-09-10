@@ -12,7 +12,25 @@ let videoShapeXPos = -3.25;
 
 let videoSrcList = [];
 
+import {OBJLoader2} from 'https://threejsfundamentals.org/threejs/resources/threejs/r119/examples/jsm/loaders/OBJLoader2.js';
+
 init();
+// identify button that opens modal
+let modalButton = document.getElementById("submit-video");
+
+// identify <span> element that closes the modal
+let span = document.getElementsByClassName("close")[0];
+
+modalButton.addEventListener("click", function () {
+  // mute depthkit character
+  depthkit.video.muted = true;
+
+})
+
+span.addEventListener("click", function () {
+  depthkit.video.muted = false;
+}
+)
 
 function init() {
   // Setup renderer
@@ -23,7 +41,7 @@ function init() {
 
   // Setup scene
   scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x000000);
+  scene.background = new THREE.Color(0x000);
   scene.fog = new THREE.Fog(0x301934, 0.0, 10.0);
 
   // Setup camera
@@ -88,24 +106,47 @@ function init() {
         // file system
         // videos.push(setUpVideo(`upload/${elt.filename}`));
       });
-
+      
       // iterate through videoShapes to create grid, one ver video
       for (let i = 0; i < videos.length; i += 1) {
+        var videoShape
         // Create a texture for each video
         const texture = createTextureFromVideoElement(videos[i]);
-        videoShape = new THREE.Mesh(
-          new THREE.CubeGeometry(0.5, 0.5, 0.2),
-          new THREE.MeshBasicMaterial({
-            map: texture,
-            side: THREE.DoubleSide
-          })
-        );
 
-        videoShape.position.x = (Math.random() - 0.5) * 5;
-        videoShape.position.y = (Math.random() - 0.5) * 5;
-        // videoShape.position.z = ( Math.random() - 0.5 ) * 10;
+        const objLoader = new OBJLoader2();
+        let material = new THREE.MeshBasicMaterial({
+                          map: texture,
+                          side: THREE.DoubleSide
+        })
+        let mesh;
+        // objLoader.addMaterials(materials);
+        objLoader.load("../assets/models/odd_rect.obj", (root) => {
+          console.log(root);
+          root.traverse( function( child ) {
+            if ( child.type === "Mesh" ) {
+              console.log(child);
+                child.material = material
+              //  child.material.color = 0xffb830;
+                videoShape = child
+                videoShape.position.x = (Math.random() - 0.5) * 5;
+                videoShape.position.y = (Math.random() - 0.5) * 5;
+                child.scale.multiplyScalar(0.001) 
+                scene.add(videoShape)
+                scene.add(child)
+              
+            }
+            scene.add(root)
 
-        scene.add(videoShape);
+
+        } );
+          
+        });
+        if(videoShape == undefined){
+            videoShape = new THREE.Mesh(
+              new THREE.CubeGeometry(0.5, 0.5, 0.2),
+              material
+            );
+        }
       }
 
     });
@@ -124,14 +165,16 @@ function setUpVideo(inSrc) {
 
   videlem.autoplay = true;
   videlem.muted = false;
-  videlem.volume = 0.03;
+  videlem.volume= 0.0;
   videlem.setAttribute("crossorigin", "anonymous"); // i think this will not be not be needed if you have a server
   videlem.style.display = "none"; // hide html video element
   videlem.load();
   videlem.play();
   return videlem;
 }
-
+document.addEventListener("click", function(){
+  playDK();
+});
 function playDK() {
   depthkit.play();
 }

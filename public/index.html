@@ -9,6 +9,10 @@
     <meta http-equiv="origin-trial" data-feature="WebVR (For Chrome M59+)" data-expires="2017-08-16"
         content="Ahwo2B0LoM2bLB015eLJ4CAvJa0xF9VVn0FO1/AaYfPklvBUwcfYFkXKenD57vhGo1WQt9Hg9IFauhKdRgLN8w8AAABreyJvcmlnaW4iOiJodHRwczovL2p1bmlvcnhzb3VuZC5naXRodWIuaW86NDQzIiwiZmVhdHVyZSI6IldlYlZSMS4xIiwiZXhwaXJ5IjoxNTAyOTEyNTk5LCJpc1N1YmRvbWFpbiI6dHJ1ZX0=" />
     <link rel="stylesheet" type="text/css" href="assets/css/style.css" />
+    <link rel="apple-touch-icon" sizes="180x180" href="public/assets/images/apple-touch-icon.png">
+    <link rel="icon" type="image/x-icon"
+        href="https://drive.google.com/drive/folders/1jELuofU2eiWYgu-pG_wb-O6YEBfK7x6T?usp=sharing">
+
 
 </head>
 
@@ -189,7 +193,23 @@ if(noise(gl_Position.yz*100.) > 0.5){
     vPos = worldPos;//gl_Position.xyz;//(modelMatrix * vec4(gl_Position.xyz, 1.0)).xyz;//(modelMatrix * vec4(position, 1.0)).xyz;
 }
     </script>
+
     <script src="js/index.js"></script>
+
+    <script src="js/howler.js"></script>
+
+    //howler audio backgroud audio sd add  In use!
+    <script src="js/index.js"></script>
+    <script src="js/howler.js"></script>
+    <script>
+
+        var sound = new Howl({
+            src: ['/assets/audio/pagejamq.mp3'],
+            autoplay: true,
+            loop: true,
+            volume: 0.08,
+    });
+</script>
 </body>
 
 </html>

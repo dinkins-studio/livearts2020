@@ -58,7 +58,7 @@ function init() {
       character = dkCharacter;
 
       // Position and rotation adjustments
-      character.rotation.set(Math.PI - 3.5, 3, Math.PI / -2.0);
+      character.rotation.set(Math.PI - 3.5, 2, Math.PI / -2.0);
       character.position.set(-1.5, 1.5, .85);
       character.scale.set(4.5, 4.5, 4.5);
 
@@ -123,7 +123,8 @@ function setUpVideo(inSrc) {
   videlem.appendChild(sourceMP4);
 
   videlem.autoplay = true;
-  videlem.muted = true;
+  videlem.muted = false;
+  videlem.volume = 0.03;
   videlem.setAttribute("crossorigin", "anonymous"); // i think this will not be not be needed if you have a server
   videlem.style.display = "none"; // hide html video element
   videlem.load();

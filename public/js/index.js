@@ -58,7 +58,7 @@ function init() {
       character = dkCharacter;
 
       // Position and rotation adjustments
-      character.rotation.set(Math.PI - 3.5, 2, Math.PI / -2.0);
+      character.rotation.set(Math.PI - 3.5, 3.6, Math.PI / -2.0);
       character.position.set(-1.5, 1.5, .85);
       character.scale.set(4.5, 4.5, 4.5);
 
@@ -101,8 +101,8 @@ function init() {
           })
         );
 
-        videoShape.position.x = (Math.random() - 0.5) * 5;
-        videoShape.position.y = (Math.random() - 0.5) * 5;
+        videoShape.position.x = (Math.random() - 0.5) * 9;
+        videoShape.position.y = (Math.random() - 0.5) * 9;
         // videoShape.position.z = ( Math.random() - 0.5 ) * 10;
 
         scene.add(videoShape);

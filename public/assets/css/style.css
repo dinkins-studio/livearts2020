@@ -107,7 +107,7 @@ button {
   align-items: center;
   position: fixed;
   top: 0;
-  right: 0; 
+  right: 0;
   margin-right: 1%;
 }
 
@@ -145,14 +145,14 @@ button {
 .object {
   display: inline-block;
   background-color: transparent;
-  background: url(../images/megaphone.gif) no-repeat 50%;
+  background: url(../images/megaphone.gif) no-repeat 90%;
   background-size: auto 90%;
   background-position: 50%;
   position: fixed;
-  bottom: 0.25%;
-  right: 1.25%;
-  width: 12rem;
-  height: 18rem;
+  bottom: 3.25%;
+  right: 3.25%;
+  width: 40rem;
+  height: 40rem;
   animation: nudge 2s infinite linear;
   cursor: pointer;
 }

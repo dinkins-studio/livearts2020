@@ -51,7 +51,7 @@ function init() {
     0.01,
     20
   );
-  camera.position.set(0, 2, 3);
+  camera.position.set(0, 1, 3);
 
   // Setup controls
   controls = new THREE.OrbitControls(camera);
@@ -73,7 +73,8 @@ function init() {
 let video = document.createElement( 'video' );
 video.src = "../assets/videos/background.mp4";
 video.load(); // must call after setting/changing source
-video.muted = true;
+video.muted = false;
+video.volume= 0; // sd add trying to get audio back.
 video.play();
 let videoImage = document.createElement( 'canvas' );
 videoImage.width = 480;
@@ -94,7 +95,7 @@ scene.background = rt;
   depthkit = new Depthkit();
   depthkit.load(
     "../assets/character/prof.txt",
-    "../assets/character/prof1.webm",
+    "../assets/character/prof.mp4",
     dkCharacter => {
       character = dkCharacter;
 
@@ -133,7 +134,7 @@ scene.background = rt;
         // file system
         // videos.push(setUpVideo(`upload/${elt.filename}`));
       });
-      
+
       // iterate through videoShapes to create grid, one ver video
       for (let i = 0; i < videos.length; i += 1) {
         var videoShape
@@ -147,26 +148,26 @@ scene.background = rt;
         })
         let mesh;
         // objLoader.addMaterials(materials);
-        objLoader.load("../assets/models/odd_rect.obj", (root) => {
-          
+        objLoader.load("../assets/models/rect.obj", (root) => {
+
           root.traverse( function( child ) {
             if ( child.type === "Mesh" ) {
-              
+
                 child.material = material
               //  child.material.color = 0xffb830;
                 videoShape = child
-                videoShape.position.x = (Math.random() - 0.5) * 5;
-                videoShape.position.y = (Math.random() - 0.5) * 5;
-                videoShape.scale.multiplyScalar(0.001) 
+                videoShape.position.x = (Math.random() - 0.5) * 6;
+                videoShape.position.y = (Math.random() - 0.5) * 6;
+                videoShape.scale.multiplyScalar(0.0005) //object scale.
                 scene.add(videoShape)
                 //scene.add(child)
-              
+
             }
             //scene.add(root)
 
 
         } );
-          
+
         });
         if(videoShape == undefined){
             videoShape = new THREE.Mesh(
@@ -192,7 +193,7 @@ function setUpVideo(inSrc) {
 
   videlem.autoplay = true;
   videlem.muted = false;
-  videlem.volume= 0.0;
+  videlem.volume= 0.0;// this was where the audio for the small Object based video sound is now when audio level is above 0 video does not load
   videlem.setAttribute("crossorigin", "anonymous"); // i think this will not be not be needed if you have a server
   videlem.style.display = "none"; // hide html video element
   videlem.load();

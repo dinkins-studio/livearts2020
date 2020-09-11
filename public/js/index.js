@@ -9,7 +9,7 @@ let rotationStep = Math.PI / 9.0;
 // custom video layout
 let videoShape1, videoShape2;
 let videoShapeXPos = -3.25;
-
+let interval;
 let videoSrcList = [];
 
 import {OBJLoader2} from 'https://threejsfundamentals.org/threejs/resources/threejs/r119/examples/jsm/loaders/OBJLoader2.js';
@@ -68,6 +68,29 @@ function init() {
 
   }
 
+  // background
+  // create the video element
+let video = document.createElement( 'video' );
+video.src = "../assets/videos/background.mp4";
+video.load(); // must call after setting/changing source
+video.muted = true;
+video.play();
+let videoImage = document.createElement( 'canvas' );
+videoImage.width = 480;
+videoImage.height = 204;
+
+let videoImageContext = videoImage.getContext( '2d' );
+// background color if no video present
+videoImageContext.fillStyle = '#000000';
+videoImageContext.fillRect( 0, 0, videoImage.width, videoImage.height );
+
+let videoTexture = new THREE.Texture( videoImage );
+videoTexture.minFilter = THREE.LinearFilter;
+videoTexture.magFilter = THREE.LinearFilter;
+const rt = new THREE.WebGLCubeRenderTarget(videoTexture.image.height);
+rt.fromEquirectangularTexture(renderer, videoTexture);
+scene.background = rt;
+
   depthkit = new Depthkit();
   depthkit.load(
     "../assets/character/prof.txt",
@@ -82,10 +105,14 @@ function init() {
 
       // Depthkit video playback control
       // Muting necessary for auto-play in chrome
-      // depthkit.video.muted = "muted";
+      depthkit.video.muted = true;
       depthkit.setLoop(true);
-      // depthkit.play();
-
+      depthkit.play();
+      console.log("hellos");
+      interval = setInterval(function(){depthkit.video.currentTime=1;},6000)
+      depthkit.video.onended = function(){
+        interval = setInterval(function(){depthkit.video.currentTime=1;},6000)
+      }
       // Add the character to the scene
       scene.add(character);
     }
@@ -121,21 +148,21 @@ function init() {
         let mesh;
         // objLoader.addMaterials(materials);
         objLoader.load("../assets/models/odd_rect.obj", (root) => {
-          console.log(root);
+          
           root.traverse( function( child ) {
             if ( child.type === "Mesh" ) {
-              console.log(child);
+              
                 child.material = material
               //  child.material.color = 0xffb830;
                 videoShape = child
                 videoShape.position.x = (Math.random() - 0.5) * 5;
                 videoShape.position.y = (Math.random() - 0.5) * 5;
-                child.scale.multiplyScalar(0.001) 
+                videoShape.scale.multiplyScalar(0.001) 
                 scene.add(videoShape)
-                scene.add(child)
+                //scene.add(child)
               
             }
-            scene.add(root)
+            //scene.add(root)
 
 
         } );
@@ -177,6 +204,8 @@ document.addEventListener("click", function(){
 });
 function playDK() {
   depthkit.play();
+  depthkit.video.muted = false;
+  clearInterval(interval);
 }
 
 function vertexShaderhader() {

@@ -180,14 +180,15 @@
             worldPos.w = 1.0;
         
             gl_Position =  projectionMatrix * modelViewMatrix * worldPos;
-                gl_PointSize = 1.;//(10.- pow(worldPos.z*2.0,3.)) * 0.5;//distance(worldPos, vec4(0));
+                gl_PointSize = (10.- pow(worldPos.z*2.0,3.)) * 0.40;//distance(worldPos, vec4(0));
                 //gl_Position.z -= (noise(gl_PointSize) * 3.-gl_PointSize) * 0.05;
         if(noise(gl_Position.yz*1000.) > 0.5){
             gl_Position.z += (noise(gl_PointSize) * 2.-gl_PointSize);
         }
-        
-         gl_Position.z  *= sin(worldPos.x * 1000.) + 0.80;
-        
+        // if(noise(gl_Position.yz) > 0.5){
+        //     gl_Position.z += (noise(gl_PointSize) * 2.-gl_PointSize);
+        // }
+        //gl_Position.z  *= sin(worldPos.x * 1000.)+0.1;
             vUv = colorTexCoord;
             vUvDepth = depthTexCoord;
             vPos = worldPos;//gl_Position.xyz;//(modelMatrix * vec4(gl_Position.xyz, 1.0)).xyz;//(modelMatrix * vec4(position, 1.0)).xyz;

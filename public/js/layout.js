@@ -9,7 +9,7 @@ let span = document.getElementsByClassName("close")[0];
 
 modalButton.onclick = function () {
   // mute depthkit character
-  depthkit.video.muted = true;
+  //depthkit.video.muted = true;
 
   modal.style.display = "block";
   // Start video capture when clicking on the button
@@ -30,7 +30,7 @@ modalButton.onclick = function () {
 // when a person clicks on <span> (x), close the modal
 span.onclick = function () {
   modal.style.display = "none";
-  depthkit.video.muted = false;
+  //depthkit.video.muted = false;
 }
 
 window.onclick = function(event) {

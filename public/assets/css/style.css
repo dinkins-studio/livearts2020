@@ -147,7 +147,7 @@ button {
 .object {
   display: inline-block;
   background-color: transparent;
-  background: url(../images/megaphone.gif) no-repeat 90%;
+  background: url(../images/megaphone.gif) no-repeat 60%;
   background-size: auto 90%;
   background-position: 50%;
   position: fixed;

@@ -51,7 +51,7 @@ function init() {
     0.01,
     20
   );
-  camera.position.set(0, 1, 3);
+  camera.position.set(0, 0, 3);
 
   // Setup controls
   controls = new THREE.OrbitControls(camera);
@@ -73,8 +73,7 @@ function init() {
 let video = document.createElement( 'video' );
 video.src = "../assets/videos/background.mp4";
 video.load(); // must call after setting/changing source
-video.muted = false;
-video.volume= 0; // sd add trying to get audio back.
+video.muted = true;
 video.play();
 let videoImage = document.createElement( 'canvas' );
 videoImage.width = 480;
@@ -95,7 +94,7 @@ scene.background = rt;
   depthkit = new Depthkit();
   depthkit.load(
     "../assets/character/prof.txt",
-    "../assets/character/prof.mp4",
+    "../assets/character/Prof.mp4",
     dkCharacter => {
       character = dkCharacter;
 
@@ -157,7 +156,7 @@ scene.background = rt;
               //  child.material.color = 0xffb830;
                 videoShape = child
                 videoShape.position.x = (Math.random() - 0.5) * 6;
-                videoShape.position.y = (Math.random() - 0.5) * 6;
+                videoShape.position.y = (Math.random() - 0.5) * 5;
                 videoShape.scale.multiplyScalar(0.0005) //object scale.
                 scene.add(videoShape)
                 //scene.add(child)

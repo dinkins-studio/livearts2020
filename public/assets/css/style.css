@@ -1,7 +1,9 @@
 @font-face {
-  font-family: 'lincoln1';
-  src: url('fonts/lincoln-mitre/LincolnMITRE-LM5x7.otf');
-  font-weight: normal;
+  font-family: 'SpecialElite1';
+  src: url('https://fonts.googleapis.com/css?family=SpecialElite+Regular');
+  /*font-family: 'lincoln1'; */
+  /*src: url('fonts/lincoln-mitre/LincolnMITRE-LM5x7.otf'); */
+  font-weight: bold;
   font-style: normal;
 }
 
@@ -21,13 +23,13 @@
 }
 
 html {
-  font-size: 56.25%;
+  font-size: 70.25%;
 }
 
 body {
   background-color: black;
   color: black;
-  font-family: 'lincoln1', Courier, monospace;
+  font-family: 'SpecialElite1', Courier, monospace;
   font-weight: 400;
   font-style: normal;
   font-size: 3rem;
@@ -68,7 +70,7 @@ a {
 }
 
 h2.prompt {
-  font-family: 'lincoln2', Courier, monospace;
+  font-family: 'SpecialElite1', Courier, monospace;
   font-weight: normal;
   font-size: 3.5rem;
   height: 7vh;

@@ -153,9 +153,9 @@ button {
   position: fixed;
   bottom: 3.25%;
   right: 3.25%;
-  width: 40rem;
-  height: 40rem;
-  animation: nudge 2s infinite linear;
+  width: 35rem;
+  height: 35rem;
+  animation: nudge 3s infinite linear;
   cursor: pointer;
 }
 

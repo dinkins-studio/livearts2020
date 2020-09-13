@@ -94,7 +94,7 @@ scene.background = rt;
   depthkit = new Depthkit();
   depthkit.load(
     "../assets/character/prof.txt",
-    "../assets/character/Prof.mp4",
+    "../assets/character/prof.mp4",
     dkCharacter => {
       character = dkCharacter;
 

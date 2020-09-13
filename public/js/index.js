@@ -51,7 +51,7 @@ function init() {
     0.01,
     20
   );
-  camera.position.set(0, 0, 3);
+  camera.position.set( 0.75,.6, 0);
 
   // Setup controls
   controls = new THREE.OrbitControls(camera);
@@ -99,8 +99,8 @@ scene.background = rt;
       character = dkCharacter;
 
       // Position and rotation adjustments
-      character.rotation.set(Math.PI - 3.5, 2, Math.PI / -2.0);
-      character.position.set(-1.5, 1.5, .85);
+      character.rotation.set(Math.PI - 3.5, 2, Math.PI / -2.2);
+      character.position.set(-1., 1.5, 1.0);
       character.scale.set(4.5, 4.5, 4.5);
 
       // Depthkit video playback control
@@ -109,9 +109,9 @@ scene.background = rt;
       depthkit.setLoop(true);
       depthkit.play();
       console.log("hellos");
-      interval = setInterval(function(){depthkit.video.currentTime=1;},6000)
+      interval = setInterval(function(){depthkit.video.currentTime=1;},5000)
       depthkit.video.onended = function(){
-        interval = setInterval(function(){depthkit.video.currentTime=1;},6000)
+        interval = setInterval(function(){depthkit.video.currentTime=1;},5000)
       }
       // Add the character to the scene
       scene.add(character);

@@ -4,7 +4,7 @@ let renderer, scene, camera, controls;
 let depthkit;
 // Depthkit character
 let character;
-let rotationStep = Math.PI / 9.0;
+//let rotationStep = Math.PI / 9.0;
 
 // custom video layout
 let videoShape1, videoShape2;
@@ -109,9 +109,9 @@ scene.background = rt;
       depthkit.setLoop(true);
       depthkit.play();
       console.log("hellos");
-      interval = setInterval(function(){depthkit.video.currentTime=1;},5000)
+      interval = setInterval(function(){depthkit.video.currentTime=0;}, 3700)
       depthkit.video.onended = function(){
-        interval = setInterval(function(){depthkit.video.currentTime=1;},5000)
+        interval = setInterval(function(){depthkit.video.currentTime=0;}, 3700)
       }
       // Add the character to the scene
       scene.add(character);

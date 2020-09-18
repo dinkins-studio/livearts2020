@@ -11,6 +11,9 @@ let videoShape1, videoShape2;
 let videoShapeXPos = -3.25;
 let interval;
 let videoSrcList = [];
+let videos = [];
+let videoShapes = [];
+let positionalAudioRadius = 5.0
 
 import {OBJLoader2} from 'https://threejsfundamentals.org/threejs/resources/threejs/r119/examples/jsm/loaders/OBJLoader2.js';
 
@@ -56,6 +59,7 @@ function init() {
   // Setup controls
   controls = new THREE.OrbitControls(camera);
   controls.target.set(0, 0.75, 0);
+  controls.minDistance = 0;
   camera.lookAt(controls.target);
 
   // A grid helper as a floor reference
@@ -108,11 +112,12 @@ scene.background = rt;
       depthkit.video.muted = true;
       depthkit.setLoop(true);
       depthkit.play();
-      console.log("hellos");
+      // this makes the depthkit character loop
       interval = setInterval(function(){depthkit.video.currentTime=0;}, 3700)
-      depthkit.video.onended = function(){
+      setTimeout(function(){
         interval = setInterval(function(){depthkit.video.currentTime=0;}, 3700)
-      }
+      }, 352000); // 5 min and 52 seconds
+
       // Add the character to the scene
       scene.add(character);
     }
@@ -126,7 +131,7 @@ scene.background = rt;
     .then(json => {
 
       // Create an array of videos based on the JSON data
-      let videos = [];
+      
       json.forEach(elt => {
         // aws
         videos.push(setUpVideo(`${elt.url}`));
@@ -156,8 +161,8 @@ scene.background = rt;
               //  child.material.color = 0xffb830;
                 videoShape = child
                 videoShape.position.x = (Math.random() - 0.5) * 6;
-                videoShape.position.y = (Math.random() - 0.5) * 5;
-                videoShape.scale.multiplyScalar(0.0005) //object scale.
+                videoShape.position.y = (Math.random() ) * 3;
+                videoShape.scale.multiplyScalar(0.000375) //object scale.
                 scene.add(videoShape)
                 //scene.add(child)
 
@@ -174,6 +179,8 @@ scene.background = rt;
               material
             );
         }
+        // this is for testing positional audio later
+        videoShapes[i]= videoShape
       }
 
     });
@@ -191,6 +198,8 @@ function setUpVideo(inSrc) {
   videlem.appendChild(sourceMP4);
 
   videlem.autoplay = true;
+  videlem.loop = true;
+
   videlem.muted = false;
   videlem.volume= 0.0;// this was where the audio for the small Object based video sound is now when audio level is above 0 video does not load
   videlem.setAttribute("crossorigin", "anonymous"); // i think this will not be not be needed if you have a server
@@ -202,10 +211,19 @@ function setUpVideo(inSrc) {
 document.addEventListener("click", function(){
   playDK();
 });
+function getDistance(mesh1, mesh2) { 
+  var dx = mesh1.position.x - mesh2.position.x; 
+  var dy = mesh1.position.y - mesh2.position.y; 
+  var dz = mesh1.position.z - mesh2.position.z; 
+  return Math.sqrt(dx*dx+dy*dy+dz*dz); 
+}
 function playDK() {
   depthkit.play();
   depthkit.video.muted = false;
   clearInterval(interval);
+  for (let i = 0; i < videos.length; i += 1) {
+    videos[i].volume= 0.1;
+  }
 }
 
 function vertexShaderhader() {
@@ -225,6 +243,16 @@ function createTextureFromVideoElement(video) {
 function render() {
   requestAnimationFrame(render);
   renderer.render(scene, camera);
+  controls.update();
+  if (videoShapes.length > 0){
+    for (let i = 0; i < videos.length; i += 1) {
+      let dist = getDistance(videoShapes[i], camera);
+      
+      if (dist < positionalAudioRadius){
+        videos[i].volume = 0.1 + (0.9 * (positionalAudioRadius-dist))
+      }
+    }
+  }
 }
 
 function onWindowResize() {

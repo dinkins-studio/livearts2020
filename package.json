@@ -10,6 +10,7 @@
     "serverless-http": "^2.5.0",
     "start": "^5.1.0"
   },
+  "type": "module",
   "scripts": {
     "start": "node index.js"
   }

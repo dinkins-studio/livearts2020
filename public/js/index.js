@@ -198,6 +198,8 @@ function setUpVideo(inSrc) {
   videlem.appendChild(sourceMP4);
 
   videlem.autoplay = true;
+  videlem.loop = true;
+
   videlem.muted = false;
   videlem.volume= 0.0;// this was where the audio for the small Object based video sound is now when audio level is above 0 video does not load
   videlem.setAttribute("crossorigin", "anonymous"); // i think this will not be not be needed if you have a server

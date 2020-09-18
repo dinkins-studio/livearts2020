@@ -51,7 +51,7 @@ function init() {
     0.01,
     20
   );
-  camera.position.set( 0.75,.6, 0);
+  camera.position.set( 0.5, 0.5, -.05);
 
   // Setup controls
   controls = new THREE.OrbitControls(camera);
@@ -99,9 +99,9 @@ scene.background = rt;
       character = dkCharacter;
 
       // Position and rotation adjustments
-      character.rotation.set(Math.PI - 3.5, 2, Math.PI / -2.2);
-      character.position.set(-1., 1.5, 1.0);
-      character.scale.set(4.5, 4.5, 4.5);
+      character.rotation.set(Math.PI - 3.2, 2, Math.PI / -2.0); //(Math.PI - 3.4, 2, Math.PI / -2.1);
+      character.position.set(-1., 0.07, 1.0);
+      character.scale.set(8, 6, 6);
 
       // Depthkit video playback control
       // Muting necessary for auto-play in chrome

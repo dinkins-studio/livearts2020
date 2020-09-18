@@ -13,7 +13,7 @@ let interval;
 let videoSrcList = [];
 let videos = [];
 let videoShapes = [];
-let positionalAudioRadius = 3.0
+let positionalAudioRadius = 5.0
 
 import {OBJLoader2} from 'https://threejsfundamentals.org/threejs/resources/threejs/r119/examples/jsm/loaders/OBJLoader2.js';
 
@@ -110,13 +110,14 @@ scene.background = rt;
       // Depthkit video playback control
       // Muting necessary for auto-play in chrome
       depthkit.video.muted = true;
-      depthkit.setLoop(false);
+      depthkit.setLoop(true);
       depthkit.play();
       // this makes the depthkit character loop
       interval = setInterval(function(){depthkit.video.currentTime=0;}, 3700)
-      depthkit.video.onended = (event)=>{
+      setTimeout(function(){
         interval = setInterval(function(){depthkit.video.currentTime=0;}, 3700)
-      }
+      }, 352000); // 5 min and 52 seconds
+
       // Add the character to the scene
       scene.add(character);
     }
@@ -243,7 +244,7 @@ function render() {
   controls.update();
   if (videoShapes.length > 0){
     for (let i = 0; i < videos.length; i += 1) {
-      let dist = getDistance(videoShapes[0], camera);
+      let dist = getDistance(videoShapes[i], camera);
       
       if (dist < positionalAudioRadius){
         videos[i].volume = 0.1 + (0.9 * (positionalAudioRadius-dist))

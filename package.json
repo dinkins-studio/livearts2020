@@ -15,6 +15,6 @@
     "npm": ">= 4.4.0"
   },
   "scripts": {
-    "start": "npm install && node index.js"
+    "start": "node index.js"
   }
 }

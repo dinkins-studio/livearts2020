@@ -1,20 +1,20 @@
-import express, { static, json } from 'express';
-import Datastore from 'nedb';
-import multer from 'multer'; // use multer to upload blob data
-const upload = multer(); // set multer to be the upload variable (just like express, see above ( include it, then use it/set it up))
-import fs from 'fs'; // use the file system so we can save files
-import { S3 } from 'aws-sdk';
-// const express = require('express');
-// const Datastore = require('nedb');
-// const multer = require('multer') // use multer to upload blob data
+// import express, { static, json } from 'express';
+// import Datastore from 'nedb';
+// import multer from 'multer'; // use multer to upload blob data
 // const upload = multer(); // set multer to be the upload variable (just like express, see above ( include it, then use it/set it up))
-// const fs = require('fs'); // use the file system so we can save files
-// const AWS = require('aws-sdk');
+// import fs from 'fs'; // use the file system so we can save files
+// import { S3 } from 'aws-sdk';
+const express = require('express');
+const Datastore = require('nedb');
+const multer = require('multer') // use multer to upload blob data
+const upload = multer(); // set multer to be the upload variable (just like express, see above ( include it, then use it/set it up))
+const fs = require('fs'); // use the file system so we can save files
+const AWS = require('aws-sdk');
 const PORT = process.env.PORT || 5000
 require('dotenv').config()
 
 const BUCKET_NAME = "say-it-aloud";
-const s3 = new S3({
+const s3 = new AWS.ACMPCAS3({
   accessKeyId: process.env.ID,
   secretAccessKey: process.env.SECRET
 });
@@ -22,8 +22,8 @@ const s3 = new S3({
 
 const app = express();
 app.listen(PORT, () => console.log(`Listening on ${PORT}`));
-app.use(static('public'));
-app.use(json({
+app.use(express.static('public'));
+app.use(express.json({
   limit: '10mb'
 }));
 

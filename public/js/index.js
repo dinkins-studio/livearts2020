@@ -13,16 +13,16 @@ let interval;
 let videoSrcList = [];
 let videos = [];
 let videoShapes = [];
-let positionalAudioRadius = 5.0
-
-import {OBJLoader2} from 'https://threejsfundamentals.org/threejs/resources/threejs/r119/examples/jsm/loaders/OBJLoader2.js';
+let positionalAudioRadius = 3.0
+let dkplay = false
+//import {OBJLoader2} from 'https://threejsfundamentals.org/threejs/resources/threejs/r119/examples/jsm/loaders/OBJLoader2.js';
 
 init();
 // identify button that opens modal
-let modalButton = document.getElementById("submit-video");
+modalButton = document.getElementById("submit-video");
 
 // identify <span> element that closes the modal
-let span = document.getElementsByClassName("close")[0];
+span = document.getElementsByClassName("close")[0];
 
 modalButton.addEventListener("click", function () {
   // mute depthkit character
@@ -74,11 +74,11 @@ function init() {
 
   // background
   // create the video element
-let video = document.createElement( 'video' );
-video.src = "../assets/videos/background.mp4";
-video.load(); // must call after setting/changing source
-video.muted = true;
-video.play();
+// let video = document.createElement( 'video' );
+// video.src = "../assets/videos/background.mp4";
+// video.load(); // must call after setting/changing source
+// video.muted = true;
+// video.play();
 let videoImage = document.createElement( 'canvas' );
 videoImage.width = 480;
 videoImage.height = 204;
@@ -103,10 +103,11 @@ scene.background = rt;
       character = dkCharacter;
 
       // Position and rotation adjustments
+
       character.rotation.set(Math.PI - 3.2, 2, Math.PI / -2.0); //(Math.PI - 3.4, 2, Math.PI / -2.1);
       character.position.set(-1., 0.07, 1.0);
       character.scale.set(8, 6, 6);
-
+      
       // Depthkit video playback control
       // Muting necessary for auto-play in chrome
       depthkit.video.muted = true;
@@ -116,6 +117,7 @@ scene.background = rt;
       interval = setInterval(function(){depthkit.video.currentTime=0;}, 3700)
       setTimeout(function(){
         interval = setInterval(function(){depthkit.video.currentTime=0;}, 3700)
+        dkplay=false
       }, 352000); // 5 min and 52 seconds
 
       // Add the character to the scene
@@ -145,40 +147,43 @@ scene.background = rt;
         // Create a texture for each video
         const texture = createTextureFromVideoElement(videos[i]);
 
-        const objLoader = new OBJLoader2();
+       // const objLoader = new OBJLoader2();
         let material = new THREE.MeshBasicMaterial({
                           map: texture,
                           side: THREE.DoubleSide
         })
         let mesh;
         // objLoader.addMaterials(materials);
-        objLoader.load("../assets/models/rect.obj", (root) => {
+        // objLoader.load("../assets/models/rect.obj", (root) => {
 
-          root.traverse( function( child ) {
-            if ( child.type === "Mesh" ) {
+        //   root.traverse( function( child ) {
+        //     if ( child.type === "Mesh" ) {
 
-                child.material = material
-              //  child.material.color = 0xffb830;
-                videoShape = child
-                videoShape.position.x = (Math.random() - 0.5) * 6;
-                videoShape.position.y = (Math.random() ) * 3;
-                videoShape.scale.multiplyScalar(0.000375) //object scale.
-                scene.add(videoShape)
-                //scene.add(child)
+        //         child.material = material
+        //       //  child.material.color = 0xffb830;
+        //         videoShape = child
+        //         videoShape.position.x = (Math.random() - 0.5) * 6;
+        //         videoShape.position.y = (Math.random() ) * 3;
+        //         videoShape.scale.multiplyScalar(0.000375) //object scale.
+        //         
+        //         //scene.add(child)
 
-            }
-            //scene.add(root)
+        //     }
+        //     //scene.add(root)
 
 
-        } );
+        // } );
 
-        });
-        if(videoShape == undefined){
+        // });
+        //if(videoShape == undefined){
             videoShape = new THREE.Mesh(
               new THREE.CubeGeometry(0.5, 0.5, 0.2),
               material
             );
-        }
+       videoShape.position.x = (Math.random() - 0.5) * 6;
+       videoShape.position.y = (Math.random() ) * 3;
+       scene.add(videoShape)
+        //}
         // this is for testing positional audio later
         videoShapes[i]= videoShape
       }
@@ -218,6 +223,8 @@ function getDistance(mesh1, mesh2) {
   return Math.sqrt(dx*dx+dy*dy+dz*dz); 
 }
 function playDK() {
+  if(dkplay){return}
+  dkplay=true
   depthkit.play();
   depthkit.video.muted = false;
   clearInterval(interval);
@@ -249,7 +256,10 @@ function render() {
       let dist = getDistance(videoShapes[i], camera);
       
       if (dist < positionalAudioRadius){
-        videos[i].volume = 0.1 + (0.9 * (positionalAudioRadius-dist))
+        let v = 0.1 + (0.9 * (positionalAudioRadius-dist));
+        if (v>1.0){v=1.0}
+        videos[i].volume =v 
+        character.setVolume(1-v)
       }
     }
   }

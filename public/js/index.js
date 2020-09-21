@@ -103,10 +103,11 @@ scene.background = rt;
       character = dkCharacter;
 
       // Position and rotation adjustments
-      character.rotation.set(Math.PI - 3.2, 2, Math.PI / -2.0);
-      character.position.set(-1., 0.07, 1.0);
-      character.scale.set(8,6,6);
 
+      character.rotation.set(Math.PI - 3.2, 2, Math.PI / -2.0); //(Math.PI - 3.4, 2, Math.PI / -2.1);
+      character.position.set(-1., 0.07, 1.0);
+      character.scale.set(8, 6, 6);
+      
       // Depthkit video playback control
       // Muting necessary for auto-play in chrome
       depthkit.video.muted = true;

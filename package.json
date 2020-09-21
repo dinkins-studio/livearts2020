@@ -11,6 +11,10 @@
     "start": "^5.1.0"
   },
   "type": "module",
+  "engines": {
+    "node": ">= 6.9.4",
+    "npm": ">= 4.4.0"
+  },
   "scripts": {
     "start": "node index.js"
   }

@@ -1,3 +1,21 @@
+// fiddling numbers:
+
+// this controls the sound radius 
+let positionalAudioRadius = 2.0
+
+// starting volume for videos
+let startingVolume = 0.05
+
+// how many videos per row
+let videoRowSize = 4.
+
+// what would it look like with this many videos
+let numberOfTestVideos=10
+
+// the width & height of the video
+let videoSize = 1.0
+
+
 //Some general Three.js components
 let renderer, scene, camera, controls;
 
@@ -13,7 +31,8 @@ let interval;
 let videoSrcList = [];
 let videos = [];
 let videoShapes = [];
-let positionalAudioRadius = 3.0
+
+
 let dkplay = false
 //import {OBJLoader2} from 'https://threejsfundamentals.org/threejs/resources/threejs/r119/examples/jsm/loaders/OBJLoader2.js';
 
@@ -54,7 +73,7 @@ function init() {
     0.01,
     20
   );
-  camera.position.set( 0.5, 0.5, -.05);
+  camera.position.set( 0, 0, -1.);
 
   // Setup controls
   controls = new THREE.OrbitControls(camera);
@@ -82,7 +101,9 @@ function init() {
 let videoImage = document.createElement( 'canvas' );
 videoImage.width = 480;
 videoImage.height = 204;
-
+let ratio = videoImage.height/videoImage.width
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+const audioCtx = new AudioContext();
 let videoImageContext = videoImage.getContext( '2d' );
 // background color if no video present
 videoImageContext.fillStyle = '#000000';
@@ -100,12 +121,13 @@ scene.background = rt;
     "../assets/character/prof.txt",
     "../assets/character/prof.mp4",
     dkCharacter => {
+      if(character !=undefined){return}
       character = dkCharacter;
 
       // Position and rotation adjustments
 
-      character.rotation.set(Math.PI - 3.2, 2, Math.PI / -2.0); //(Math.PI - 3.4, 2, Math.PI / -2.1);
-      character.position.set(-1., 0.07, 1.0);
+      character.rotation.set(Math.PI - 3.4,0, Math.PI / -2.0); //(Math.PI - 3.4, 2, Math.PI / -2.1);
+      character.position.set(0, 0.07, 0);
       character.scale.set(8, 6, 6);
       
       // Depthkit video playback control
@@ -140,12 +162,24 @@ scene.background = rt;
         // file system
         // videos.push(setUpVideo(`upload/${elt.filename}`));
       });
+      json.forEach(elt => {
+        // aws
+        videos.push(setUpVideo(`${elt.url}`));
+        // file system
+        // videos.push(setUpVideo(`upload/${elt.filename}`));
+      });
+      json.forEach(elt => {
+        // aws
+        videos.push(setUpVideo(`${elt.url}`));
+        // file system
+        // videos.push(setUpVideo(`upload/${elt.filename}`));
+      });
 
       // iterate through videoShapes to create grid, one ver video
-      for (let i = 0; i < videos.length; i += 1) {
+      for (let i = 0; i < numberOfTestVideos; i += 1) {
         var videoShape
         // Create a texture for each video
-        const texture = createTextureFromVideoElement(videos[i]);
+        const texture = createTextureFromVideoElement(videos[i% videos.length]);
 
        // const objLoader = new OBJLoader2();
         let material = new THREE.MeshBasicMaterial({
@@ -177,11 +211,12 @@ scene.background = rt;
         // });
         //if(videoShape == undefined){
             videoShape = new THREE.Mesh(
-              new THREE.CubeGeometry(0.5, 0.5, 0.2),
+              new THREE.CubeGeometry(videoSize,videoSize,0.2),
               material
             );
-       videoShape.position.x = (Math.random() - 0.5) * 6;
-       videoShape.position.y = (Math.random() ) * 3;
+       videoShape.position.x = (i%videoRowSize)*3;
+       videoShape.position.y = -(Math.floor(i/videoRowSize)*3) + 5
+       videoShape.position.z = 3;
        scene.add(videoShape)
         //}
         // this is for testing positional audio later
@@ -228,8 +263,8 @@ function playDK() {
   depthkit.play();
   depthkit.video.muted = false;
   clearInterval(interval);
-  for (let i = 0; i < videos.length; i += 1) {
-    videos[i].volume= 0.1;
+  for (let i = 0; i < numberOfTestVideos; i += 1) {
+    videos[i].volume= startingVolume;
   }
 }
 
@@ -254,9 +289,9 @@ function render() {
   if (videoShapes.length > 0){
     for (let i = 0; i < videos.length; i += 1) {
       let dist = getDistance(videoShapes[i], camera);
-      
+      videos[i].volume =startingVolume
       if (dist < positionalAudioRadius){
-        let v = 0.1 + (0.9 * (positionalAudioRadius-dist));
+        let v = startingVolume + ((1-startingVolume) * (positionalAudioRadius-dist));
         if (v>1.0){v=1.0}
         videos[i].volume =v 
         character.setVolume(1-v)

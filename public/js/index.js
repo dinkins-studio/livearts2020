@@ -1,6 +1,6 @@
 // fiddling numbers:
 
-// this controls the sound radius 
+// this controls the sound radius
 let positionalAudioRadius = 2.0
 
 // starting volume for videos
@@ -73,7 +73,7 @@ function init() {
     0.01,
     20
   );
-  camera.position.set( 0, 0, -1.);
+  camera.position.set( 2,-0, -1);//z y x 
 
   // Setup controls
   controls = new THREE.OrbitControls(camera);

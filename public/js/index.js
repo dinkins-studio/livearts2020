@@ -126,10 +126,10 @@ scene.background = rt;
 
       // Position and rotation adjustments
 
-      character.rotation.set(Math.PI - 3.4,0, Math.PI / -2.0); //(Math.PI - 3.4, 2, Math.PI / -2.1);
-      character.position.set(0, 0.07, 0);
+      character.rotation.set(Math.PI - 3.4, -0.1, Math.PI / -2.0); //(Math.PI - 3.4, 2, Math.PI / -2.1);
+      character.position.set(4, .07, 0);
       character.scale.set(8, 6, 6);
-      
+
       // Depthkit video playback control
       // Muting necessary for auto-play in chrome
       depthkit.video.muted = true;
@@ -155,7 +155,7 @@ scene.background = rt;
     .then(json => {
 
       // Create an array of videos based on the JSON data
-      
+
       json.forEach(elt => {
         // aws
         videos.push(setUpVideo(`${elt.url}`));
@@ -199,7 +199,7 @@ scene.background = rt;
         //         videoShape.position.x = (Math.random() - 0.5) * 6;
         //         videoShape.position.y = (Math.random() ) * 3;
         //         videoShape.scale.multiplyScalar(0.000375) //object scale.
-        //         
+        //
         //         //scene.add(child)
 
         //     }
@@ -251,11 +251,11 @@ function setUpVideo(inSrc) {
 document.addEventListener("click", function(){
   playDK();
 });
-function getDistance(mesh1, mesh2) { 
-  var dx = mesh1.position.x - mesh2.position.x; 
-  var dy = mesh1.position.y - mesh2.position.y; 
-  var dz = mesh1.position.z - mesh2.position.z; 
-  return Math.sqrt(dx*dx+dy*dy+dz*dz); 
+function getDistance(mesh1, mesh2) {
+  var dx = mesh1.position.x - mesh2.position.x;
+  var dy = mesh1.position.y - mesh2.position.y;
+  var dz = mesh1.position.z - mesh2.position.z;
+  return Math.sqrt(dx*dx+dy*dy+dz*dz);
 }
 function playDK() {
   if(dkplay){return}
@@ -293,7 +293,7 @@ function render() {
       if (dist < positionalAudioRadius){
         let v = startingVolume + ((1-startingVolume) * (positionalAudioRadius-dist));
         if (v>1.0){v=1.0}
-        videos[i].volume =v 
+        videos[i].volume =v
         character.setVolume(1-v)
       }
     }

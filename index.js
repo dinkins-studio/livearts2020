@@ -65,16 +65,16 @@ app.post("/upload", upload.single("videoBlob"), function(req, res, next) {
       console.log(`File uploaded successfully. ${data.Location}`);
     });
   };
-  
+
   uploadFile();
-  
+
   res.sendStatus(200); // send back that everything went ok
   // Another option if you wanted to send a custom message back
   // res.json({
   //   status: "it worked!",
   //   filename: req.file.originalname
   // });
-  
+
 });
 
 // connect to ThreeJS - this is a list of webm video uploads

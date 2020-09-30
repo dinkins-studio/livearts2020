@@ -13,7 +13,7 @@ const AWS = require('aws-sdk');
 const PORT = process.env.PORT || 5000
 require('dotenv').config()
 
-const BUCKET_NAME = "say-it-aloud";
+const BUCKET_NAME = "whenwordsfail";
 const s3 = new AWS.S3({
   accessKeyId: process.env.ID,
   secretAccessKey: process.env.SECRET

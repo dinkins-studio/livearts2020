@@ -118,8 +118,8 @@ scene.background = rt;
 
   depthkit = new Depthkit();
   depthkit.load(
-    "../assets/character/prof.txt",
-    "../assets/character/prof.mp4",
+    "../assets/character/scream.txt",
+    "../assets/character/scream.mp4",
     dkCharacter => {
       if(character !=undefined){return}
       character = dkCharacter;

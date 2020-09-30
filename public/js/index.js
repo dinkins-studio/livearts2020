@@ -10,7 +10,7 @@ let startingVolume = 0.05
 let videoRowSize = 4.
 
 // what would it look like with this many videos
-let numberOfTestVideos=10
+let numberOfTestVideos = 3
 
 // the width & height of the video
 let videoSize = 1.0

@@ -1,10 +1,10 @@
 // fiddling numbers:
 
 // this controls the sound radius
-let positionalAudioRadius = 2.0
+let positionalAudioRadius = 3.0
 
 // starting volume for videos
-let startingVolume = 0.08
+let startingVolume = 0.04
 
 // how many videos per row
 let videoRowSize = 4.
@@ -16,11 +16,11 @@ let numberOfTestVideos=4
 // the width & height of the video
 let videoSize = 1.0
 
-let profSinScale = 0.5// this will control how much or how little the professor rotates side to side
+let profSinScale = 0.09// this will control how much or how little the professor rotates side to side
 
 // starting rotation of the professor
-let profRotx = Math.PI - 3.4
-let profRoty = 0.1
+let profRotx = Math.PI -3.4 //rotate back and forward
+let profRoty = -.7 //left /-=right
 let profRotz = Math.PI / -2.0
 
 //Some general Three.js components
@@ -300,11 +300,11 @@ function createTextureFromVideoElement(video) {
 
 function render() {
   requestAnimationFrame(render);
-  
+
   //renderer.render(profScene, camera);
   renderer.render(scene, camera)
   renderer.render(profScene, profCamera)
-  
+
 
   controls.update();
   increasingNumber+=0.01;

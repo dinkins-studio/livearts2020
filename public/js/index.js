@@ -4,13 +4,13 @@
 let positionalAudioRadius = 2.0
 
 // starting volume for videos
-let startingVolume = 0.05
+let startingVolume = 0.08
 
 // how many videos per row
 let videoRowSize = 4.
 
 // what would it look like with this many videos
-let numberOfTestVideos=10
+let numberOfTestVideos=4
 
 // the width & height of the video
 let videoSize = 1.0
@@ -68,12 +68,12 @@ function init() {
 
   // Setup camera
   camera = new THREE.PerspectiveCamera(
-    75,
+80,
     window.innerWidth / window.innerHeight,
     0.01,
     20
   );
-  camera.position.set( 2,-0, -1);//z y x 
+  camera.position.set(.1, 0, -.9);//y z z
 
   // Setup controls
   controls = new THREE.OrbitControls(camera);
@@ -126,9 +126,9 @@ scene.background = rt;
 
       // Position and rotation adjustments
 
-      character.rotation.set(Math.PI - 3.4, -0.1, Math.PI / -2.0); //(Math.PI - 3.4, 2, Math.PI / -2.1);
-      character.position.set(4, .07, 0);
-      character.scale.set(8, 6, 6);
+      character.rotation.set(Math.PI - 3.3, -.7, Math.PI / -2.0); //(Math.PI - 3.4, 2, Math.PI / -2.1);
+      character.position.set(0, .07, -2);
+      character.scale.set(8, 5, 5);
 
       // Depthkit video playback control
       // Muting necessary for auto-play in chrome

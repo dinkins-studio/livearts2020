@@ -181,7 +181,6 @@ button {
   background-position: 50%;
   position: fixed;
   bottom: 1%;
-  right: 1%;
   width: 30vw;
   height: 30vh;
   animation: nudge 3s infinite linear;

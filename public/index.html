@@ -16,11 +16,13 @@
 
 </head>
 
-<body>
+<body onload="pageIsLoading()">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r115/three.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.1.9/p5.js"></script>
     <script src="js/OrbitControls.js"></script>
     <script src="js/depthkit.js"></script>
+
+    <div id="loader"></div>
 
     <div id="info">
         <button id="submit-video" class="object"> </button>
@@ -54,6 +56,19 @@
             </div>
         </div>
     </div>
+
+    <script>
+        let clock;
+        
+        function pageIsLoading() {
+          clock = setTimeout(showPage, 3000);
+        }
+        
+        function showPage() {
+          document.getElementById("loader").style.display = "none";
+          document.getElementById("info").style.display = "block";
+        }
+        </script>
 
     <script src="js/layout.js"></script>
     <script src="js/video.js"></script>

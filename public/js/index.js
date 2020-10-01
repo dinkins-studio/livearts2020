@@ -10,11 +10,8 @@ let startingVolume = 0.08
 let videoRowSize = 4.
 
 // what would it look like with this many videos
-<<<<<<< HEAD
-let numberOfTestVideos=3
-=======
+
 let numberOfTestVideos=4
->>>>>>> 9f9865918d8fabdcc0b6e5b1e004f14b52b77499
 
 // the width & height of the video
 let videoSize = 1.0
@@ -87,11 +84,7 @@ function init() {
     0.01,
     20
   );
-<<<<<<< HEAD
   camera.position.set( 0,0,-1);
-=======
-  camera.position.set(.1, 0, -.9);//y z z
->>>>>>> 9f9865918d8fabdcc0b6e5b1e004f14b52b77499
 
   profCamera = new THREE.PerspectiveCamera(
     75,
@@ -156,15 +149,13 @@ scene.background = rt;
 
       // Position and rotation adjustments
 
-<<<<<<< HEAD
       character.rotation.set(profRotx,profRoty, profRotz); //(Math.PI - 3.4, 2, Math.PI / -2.1);
       character.position.set(4, .07, 0);
       character.scale.set(8, 6, 6);
-=======
-      character.rotation.set(Math.PI - 3.3, -.7, Math.PI / -2.0); //(Math.PI - 3.4, 2, Math.PI / -2.1);
-      character.position.set(0, .07, -2);
-      character.scale.set(8, 5, 5);
->>>>>>> 9f9865918d8fabdcc0b6e5b1e004f14b52b77499
+
+      // character.rotation.set(Math.PI - 3.3, -.7, Math.PI / -2.0); //(Math.PI - 3.4, 2, Math.PI / -2.1);
+      // character.position.set(0, .07, -2);
+      // character.scale.set(8, 5, 5);
 
       // Depthkit video playback control
       // Muting necessary for auto-play in chrome

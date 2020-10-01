@@ -10,14 +10,20 @@ let startingVolume = 0.05
 let videoRowSize = 4.
 
 // what would it look like with this many videos
-let numberOfTestVideos=10
+let numberOfTestVideos=3
 
 // the width & height of the video
 let videoSize = 1.0
 
+let profSinScale = 0.5// this will control how much or how little the professor rotates side to side
+
+// starting rotation of the professor
+let profRotx = Math.PI - 3.4
+let profRoty = 0.1
+let profRotz = Math.PI / -2.0
 
 //Some general Three.js components
-let renderer, scene, camera, controls;
+let renderer, scene, camera, controls, profCamera, profScene, profControls;
 
 let depthkit;
 // Depthkit character
@@ -31,7 +37,7 @@ let interval;
 let videoSrcList = [];
 let videos = [];
 let videoShapes = [];
-
+let increasingNumber = 0;
 
 let dkplay = false
 //import {OBJLoader2} from 'https://threejsfundamentals.org/threejs/resources/threejs/r119/examples/jsm/loaders/OBJLoader2.js';
@@ -56,31 +62,46 @@ span.addEventListener("click", function () {
 
 function init() {
   // Setup renderer
-  renderer = new THREE.WebGLRenderer();
+  renderer = new THREE.WebGLRenderer({ antialias: true });
   renderer.setPixelRatio(window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
-  document.body.appendChild(renderer.domElement);
 
+  document.body.appendChild(renderer.domElement);
+  renderer.autoClearColor = false;
+  renderer.autoClear = false;
   // Setup scene
   scene = new THREE.Scene();
   scene.background = new THREE.Color(0x000);
   scene.fog = new THREE.Fog(0x301934, 0.0, 10.0);
 
-  // Setup camera
+  profScene = new THREE.Scene();
+
+  // Setup camera for videos
   camera = new THREE.PerspectiveCamera(
     75,
     window.innerWidth / window.innerHeight,
     0.01,
     20
   );
-  camera.position.set( 2,-0, -1);//z y x 
+  camera.position.set( 0,0,-1);
 
+  profCamera = new THREE.PerspectiveCamera(
+    75,
+    window.innerWidth / window.innerHeight,
+    0.01,
+    20
+  );
+  profCamera.position.set( 2,-0, -4);//z y x 
+  profScene.add(profCamera)
   // Setup controls
-  controls = new THREE.OrbitControls(camera);
-  controls.target.set(0, 0.75, 0);
-  controls.minDistance = 0;
-  camera.lookAt(controls.target);
+  profControls = new THREE.OrbitControls(profCamera);
+  profControls.enabled = false;
 
+  controls = new THREE.OrbitControls(camera);
+ controls.target.set(0, 0.75, 0);
+ controls.minDistance = 0;
+  camera.lookAt(controls.target);
+  profCamera.lookAt(0, 0.75, 0)
   // A grid helper as a floor reference
   let gridHelper = new THREE.GridHelper(50, 50);
   // scene.add(gridHelper);
@@ -98,6 +119,7 @@ function init() {
 // video.load(); // must call after setting/changing source
 // video.muted = true;
 // video.play();
+
 let videoImage = document.createElement( 'canvas' );
 videoImage.width = 480;
 videoImage.height = 204;
@@ -126,7 +148,7 @@ scene.background = rt;
 
       // Position and rotation adjustments
 
-      character.rotation.set(Math.PI - 3.4, -0.1, Math.PI / -2.0); //(Math.PI - 3.4, 2, Math.PI / -2.1);
+      character.rotation.set(profRotx,profRoty, profRotz); //(Math.PI - 3.4, 2, Math.PI / -2.1);
       character.position.set(4, .07, 0);
       character.scale.set(8, 6, 6);
 
@@ -143,7 +165,7 @@ scene.background = rt;
       }, 352000); // 5 min and 52 seconds
 
       // Add the character to the scene
-      scene.add(character);
+      profScene.add(character);
     }
   );
 
@@ -162,18 +184,7 @@ scene.background = rt;
         // file system
         // videos.push(setUpVideo(`upload/${elt.filename}`));
       });
-      json.forEach(elt => {
-        // aws
-        videos.push(setUpVideo(`${elt.url}`));
-        // file system
-        // videos.push(setUpVideo(`upload/${elt.filename}`));
-      });
-      json.forEach(elt => {
-        // aws
-        videos.push(setUpVideo(`${elt.url}`));
-        // file system
-        // videos.push(setUpVideo(`upload/${elt.filename}`));
-      });
+
 
       // iterate through videoShapes to create grid, one ver video
       for (let i = 0; i < numberOfTestVideos; i += 1) {
@@ -214,8 +225,8 @@ scene.background = rt;
               new THREE.CubeGeometry(videoSize,videoSize,0.2),
               material
             );
-       videoShape.position.x = (i%videoRowSize)*3;
-       videoShape.position.y = -(Math.floor(i/videoRowSize)*3) + 5
+       videoShape.position.x = ((i%videoRowSize)- videoRowSize/4)*3  ;
+       videoShape.position.y = -(Math.floor(i/videoRowSize)*3) + Math.floor(numberOfTestVideos/videoRowSize)
        videoShape.position.z = 3;
        scene.add(videoShape)
         //}
@@ -284,8 +295,17 @@ function createTextureFromVideoElement(video) {
 
 function render() {
   requestAnimationFrame(render);
-  renderer.render(scene, camera);
+  
+  //renderer.render(profScene, camera);
+  renderer.render(scene, camera)
+  renderer.render(profScene, profCamera)
+  
+
   controls.update();
+  increasingNumber+=0.01;
+  if(character != undefined){
+    character.rotation.set(profRotx,profRoty+ (Math.sin(increasingNumber) * profSinScale), profRotz)
+  }
   if (videoShapes.length > 0){
     for (let i = 0; i < videos.length; i += 1) {
       let dist = getDistance(videoShapes[i], camera);
@@ -303,6 +323,8 @@ function render() {
 function onWindowResize() {
   camera.aspect = window.innerWidth / window.innerHeight;
   camera.updateProjectionMatrix();
+  profCamera.aspect = window.innerWidth / window.innerHeight;
+  profCamera.updateProjectionMatrix();
   renderer.setSize(window.innerWidth, window.innerHeight);
 }
 

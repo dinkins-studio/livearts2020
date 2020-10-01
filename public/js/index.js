@@ -79,20 +79,20 @@ function init() {
 
   // Setup camera for videos
   camera = new THREE.PerspectiveCamera(
-80,
+75,
     window.innerWidth / window.innerHeight,
     0.01,
     20
   );
-  camera.position.set( 0,0,-1);
+  camera.position.set(-.0, 0, -1);
 
   profCamera = new THREE.PerspectiveCamera(
-    75,
+50,
     window.innerWidth / window.innerHeight,
     0.01,
     20
   );
-  profCamera.position.set( 2,-0, -4);//z y x 
+  profCamera.position.set(-0, -0, -5);//z y x
   profScene.add(profCamera)
   // Setup controls
   profControls = new THREE.OrbitControls(profCamera);
@@ -102,7 +102,7 @@ function init() {
  controls.target.set(0, 0.75, 0);
  controls.minDistance = 0;
   camera.lookAt(controls.target);
-  profCamera.lookAt(0, 0.75, 0)
+  profCamera.lookAt(0, 0.5, 0)
   // A grid helper as a floor reference
   let gridHelper = new THREE.GridHelper(50, 50);
   // scene.add(gridHelper);
@@ -150,7 +150,7 @@ scene.background = rt;
       // Position and rotation adjustments
 
       character.rotation.set(profRotx,profRoty, profRotz); //(Math.PI - 3.4, 2, Math.PI / -2.1);
-      character.position.set(4, .07, 0);
+      character.position.set(-1,.7, 0);
       character.scale.set(8, 6, 6);
 
       // character.rotation.set(Math.PI - 3.3, -.7, Math.PI / -2.0); //(Math.PI - 3.4, 2, Math.PI / -2.1);

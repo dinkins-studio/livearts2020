@@ -9,8 +9,16 @@ let startingVolume = 0.04
 // how many videos per row
 let videoRowSize = 4.
 
-// what would it look like with this many videos
+// bigger number moves camera faster
+let moveCam = 0.2
 
+//background opacity
+let backgroundOpacity = 0.2
+
+// this is how far apart the videos are from eachother
+let videoDist = 2.
+
+// what would it look like with this many videos
 let numberOfTestVideos=4
 
 // the width & height of the video
@@ -101,6 +109,9 @@ function init() {
   controls = new THREE.OrbitControls(camera);
  controls.target.set(0, 0.75, 0);
  controls.minDistance = 0;
+ controls.enableKeys = true
+ controls.enablePan=true
+ controls.keyPanSpeed = 30.
   camera.lookAt(controls.target);
   profCamera.lookAt(0, 0.5, 0)
   // A grid helper as a floor reference
@@ -115,29 +126,46 @@ function init() {
 
   // background
   // create the video element
-// let video = document.createElement( 'video' );
-// video.src = "../assets/videos/background.mp4";
-// video.load(); // must call after setting/changing source
-// video.muted = true;
-// video.play();
+let video = document.createElement( 'video' );
+video.src = "../assets/videos/background.mp4";
+video.load(); // must call after setting/changing source
+video.muted = true;
+video.play();
+video.loop= true
 
-let videoImage = document.createElement( 'canvas' );
-videoImage.width = 480;
-videoImage.height = 204;
-let ratio = videoImage.height/videoImage.width
-const AudioContext = window.AudioContext || window.webkitAudioContext;
-const audioCtx = new AudioContext();
-let videoImageContext = videoImage.getContext( '2d' );
-// background color if no video present
-videoImageContext.fillStyle = '#000000';
-videoImageContext.fillRect( 0, 0, videoImage.width, videoImage.height );
+const texture = createTextureFromVideoElement(video);
 
-let videoTexture = new THREE.Texture( videoImage );
-videoTexture.minFilter = THREE.LinearFilter;
-videoTexture.magFilter = THREE.LinearFilter;
-const rt = new THREE.WebGLCubeRenderTarget(videoTexture.image.height);
-rt.fromEquirectangularTexture(renderer, videoTexture);
-scene.background = rt;
+// const objLoader = new OBJLoader2();
+let materialv = new THREE.MeshBasicMaterial({
+                  map: texture,
+                  side: THREE.DoubleSide,
+                  transparent: true,
+                  opacity: backgroundOpacity
+})
+
+    videoShape = new THREE.Mesh(
+      new THREE.CubeGeometry(window.innerWidth/35,window.innerHeight/35,25),
+      materialv
+    );
+    profScene.add(videoShape)
+// let videoImage = document.createElement( 'canvas' );
+// videoImage.width = 480;
+// videoImage.height = 204;
+// let ratio = videoImage.height/videoImage.width
+// const AudioContext = window.AudioContext || window.webkitAudioContext;
+// const audioCtx = new AudioContext();
+// let videoImageContext = videoImage.getContext( '2d' );
+// // background color if no video present
+// videoImageContext.fillStyle = '#000000';
+// videoImageContext.fillRect( 0, 0, videoImage.width, videoImage.height );
+
+// let videoTexture = new THREE.Texture( videoImage );
+// videoTexture.minFilter = THREE.LinearFilter;
+// videoTexture.magFilter = THREE.LinearFilter;
+//  const rt = new THREE.WebGLCubeRenderTarget(videoTexture.image.height);
+//  rt.fromEquirectangularTexture(renderer, videoTexture);
+// //var rt = new THREE.VideoTexture( video );
+// scene.background = rt;
 
   depthkit = new Depthkit();
   depthkit.load(
@@ -230,9 +258,11 @@ scene.background = rt;
               new THREE.CubeGeometry(videoSize,videoSize,0.2),
               material
             );
-       videoShape.position.x = ((i%videoRowSize)- videoRowSize/4)*3  ;
-       videoShape.position.y = -(Math.floor(i/videoRowSize)*3) + Math.floor(numberOfTestVideos/videoRowSize)
-       videoShape.position.z = 3;
+        let cos = (Math.cos((((i%videoRowSize)/videoRowSize)*(Math.PI*2.)))+1.)/2.0
+        videoShape.rotation.y += ((i%videoRowSize)- (videoRowSize/2)) * 0.4
+       videoShape.position.x = ((i%videoRowSize)- videoRowSize/4)*videoDist  ;
+       videoShape.position.y = -(Math.floor(i/videoRowSize)*videoDist) + Math.floor(numberOfTestVideos/videoRowSize)
+       videoShape.position.z = (1.-cos) * 1.3;
        scene.add(videoShape)
         //}
         // this is for testing positional audio later
@@ -280,7 +310,9 @@ function playDK() {
   depthkit.video.muted = false;
   clearInterval(interval);
   for (let i = 0; i < numberOfTestVideos; i += 1) {
-    videos[i].volume= startingVolume;
+    if(videos[i].readyState == 4){
+        videos[i].volume= startingVolume;
+    }
   }
 }
 
@@ -361,14 +393,35 @@ function onKeyDown(event) {
       break;
     case 88: // key 'x'
       character.rotation.z -= rotationStep;
-      break;
-
+    //   break;
+    // case 83: // up
+    //    camera.position.z += moveCam;
+    //    break;
+    // case 38: // up
+    //    camera.position.z += moveCam;
+    //    break;
+    // case 87: // down
+    //    camera.position.y -= moveCam;
+    //    console.log("move")
+    //    break;
+    // case 40: // down
+    //    camera.position.y -= moveCam;
+    //    console.log("move")
+    //    break;
+    // case 37: // legft
+    //    camera.position.x -= moveCam;
+    //    console.log("move")
+    //    break;
+    // case 39: // down
+    //    camera.position.x += moveCam;
+     
+       break;
     default:
       scene.updateMatrixWorld();
 
       var v = new THREE.Vector3();
       v.setFromMatrixPosition(character.matrixWorld);
-      console.log(v);
+    
 
       return;
   }

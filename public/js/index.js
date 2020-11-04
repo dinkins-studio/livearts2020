@@ -29,7 +29,11 @@ let profSinScale = 0.2// this will control how much or how little the professor 
 // starting rotation of the professor
 let profRotx = Math.PI -3.4 //rotate back and forward
 let profRoty = -.7 //left /-=right
+<<<<<<< HEAD
 let profRotz = Math.PI / -2.5 // -2= default
+=======
+let profRotz = Math.PI / 0.0 // -2= default
+>>>>>>> d677c000b209c951414c6f139b161d51945ab8f9
 
 //Some general Three.js components
 let renderer, scene, camera, controls, profCamera, profScene, profControls;

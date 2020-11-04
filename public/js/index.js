@@ -29,7 +29,7 @@ let profSinScale = 0.2// this will control how much or how little the professor 
 // starting rotation of the professor
 let profRotx = Math.PI -3.4 //rotate back and forward
 let profRoty = -.7 //left /-=right
-let profRotz = Math.PI / -2.0
+let profRotz = Math.PI / -1.0
 
 //Some general Three.js components
 let renderer, scene, camera, controls, profCamera, profScene, profControls;
@@ -414,14 +414,14 @@ function onKeyDown(event) {
     //    break;
     // case 39: // down
     //    camera.position.x += moveCam;
-     
+
        break;
     default:
       scene.updateMatrixWorld();
 
       var v = new THREE.Vector3();
       v.setFromMatrixPosition(character.matrixWorld);
-    
+
 
       return;
   }

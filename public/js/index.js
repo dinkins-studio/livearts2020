@@ -220,7 +220,7 @@ let materialv = new THREE.MeshBasicMaterial({
 
 
       // iterate through videoShapes to create grid, one ver video
-      for (let i = 0; i < numberOfTestVideos; i += 1) {
+      for (let i = 0; i < videos.length; i += 1) {
         var videoShape
         // Create a texture for each video
         const texture = createTextureFromVideoElement(videos[i% videos.length]);

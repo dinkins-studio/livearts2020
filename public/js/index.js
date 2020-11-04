@@ -16,7 +16,7 @@ let numberOfTestVideos=4
 // the width & height of the video
 let videoSize = 1.0
 
-let profSinScale = 0.09// this will control how much or how little the professor rotates side to side
+let profSinScale = 0.2// this will control how much or how little the professor rotates side to side
 
 // starting rotation of the professor
 let profRotx = Math.PI -3.4 //rotate back and forward
@@ -84,7 +84,7 @@ function init() {
     0.01,
     20
   );
-  camera.position.set(-.0, 0, -1);
+  camera.position.set(-.0, .5, -1);  //camera for box video contributions
 
   profCamera = new THREE.PerspectiveCamera(
 50,
@@ -150,7 +150,7 @@ scene.background = rt;
       // Position and rotation adjustments
 
       character.rotation.set(profRotx,profRoty, profRotz); //(Math.PI - 3.4, 2, Math.PI / -2.1);
-      character.position.set(-1,.7, 0);
+      character.position.set(-.5 ,.7, 0);
       character.scale.set(8, 6, 6);
 
       // character.rotation.set(Math.PI - 3.3, -.7, Math.PI / -2.0); //(Math.PI - 3.4, 2, Math.PI / -2.1);
@@ -227,7 +227,7 @@ scene.background = rt;
         // });
         //if(videoShape == undefined){
             videoShape = new THREE.Mesh(
-              new THREE.CubeGeometry(videoSize,videoSize,0.2),
+              new THREE.CubeGeometry(videoSize,videoSize, 0.009),
               material
             );
        videoShape.position.x = ((i%videoRowSize)- videoRowSize/4)*3  ;

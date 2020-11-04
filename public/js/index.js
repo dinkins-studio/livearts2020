@@ -16,7 +16,7 @@ let moveCam = 0.2
 let backgroundOpacity = 0.2
 
 // this is how far apart the videos are from eachother
-let videoDist = 2.
+let videoDist = 1.
 
 // what would it look like with this many videos
 let numberOfTestVideos=4
@@ -24,12 +24,12 @@ let numberOfTestVideos=4
 // the width & height of the video
 let videoSize = 1.0
 
-let profSinScale = 0.09// this will control how much or how little the professor rotates side to side
+let profSinScale = 0.2// this will control how much or how little the professor rotates side to side
 
 // starting rotation of the professor
 let profRotx = Math.PI -3.4 //rotate back and forward
 let profRoty = -.7 //left /-=right
-let profRotz = Math.PI / -2.0
+let profRotz = Math.PI / -2.0 //DEFAULT -2
 
 //Some general Three.js components
 let renderer, scene, camera, controls, profCamera, profScene, profControls;
@@ -92,7 +92,7 @@ function init() {
     0.01,
     20
   );
-  camera.position.set(-.0, 0, -1);
+  camera.position.set(-.0, .5, -1);  //camera for box video contributions
 
   profCamera = new THREE.PerspectiveCamera(
 50,
@@ -100,7 +100,7 @@ function init() {
     0.01,
     20
   );
-  profCamera.position.set(-0, -0, -5);//z y x
+  profCamera.position.set(-0, -0, -4);//z y x
   profScene.add(profCamera)
   // Setup controls
   profControls = new THREE.OrbitControls(profCamera);
@@ -178,7 +178,7 @@ let materialv = new THREE.MeshBasicMaterial({
       // Position and rotation adjustments
 
       character.rotation.set(profRotx,profRoty, profRotz); //(Math.PI - 3.4, 2, Math.PI / -2.1);
-      character.position.set(-1,.7, 0);
+      character.position.set(-.5 ,.7, 0);
       character.scale.set(8, 6, 6);
 
       // character.rotation.set(Math.PI - 3.3, -.7, Math.PI / -2.0); //(Math.PI - 3.4, 2, Math.PI / -2.1);
@@ -255,7 +255,7 @@ let materialv = new THREE.MeshBasicMaterial({
         // });
         //if(videoShape == undefined){
             videoShape = new THREE.Mesh(
-              new THREE.CubeGeometry(videoSize,videoSize,0.2),
+              new THREE.CubeGeometry(videoSize,videoSize, 0.009),
               material
             );
         let cos = (Math.cos((((i%videoRowSize)/videoRowSize)*(Math.PI*2.)))+1.)/2.0
@@ -414,14 +414,14 @@ function onKeyDown(event) {
     //    break;
     // case 39: // down
     //    camera.position.x += moveCam;
-     
+
        break;
     default:
       scene.updateMatrixWorld();
 
       var v = new THREE.Vector3();
       v.setFromMatrixPosition(character.matrixWorld);
-    
+
 
       return;
   }

@@ -16,7 +16,7 @@ let moveCam = 0.2
 let backgroundOpacity = 0.2
 
 // this is how far apart the videos are from eachother
-let videoDist = 2.
+let videoDist = 1.
 
 // what would it look like with this many videos
 let numberOfTestVideos=4
@@ -100,7 +100,7 @@ function init() {
     0.01,
     20
   );
-  profCamera.position.set(-0, -0, -5);//z y x
+  profCamera.position.set(-0, -0, -4);//z y x
   profScene.add(profCamera)
   // Setup controls
   profControls = new THREE.OrbitControls(profCamera);

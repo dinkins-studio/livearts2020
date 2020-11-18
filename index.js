@@ -30,10 +30,8 @@ app.use(express.json({
 const database = new Datastore('database.db');
 database.loadDatabase();
 
-
 app.post("/upload", upload.single("videoBlob"), function(req, res, next) {
   let uploadLocation = __dirname + "/public/upload/" + req.file.originalname; // where to save the file to. make sure the incoming name has a .wav extension
-
 //   fs.writeFileSync(
 //     uploadLocation,
 //     Buffer.from(new Uint8Array(req.file.buffer))

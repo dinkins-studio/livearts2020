@@ -263,7 +263,7 @@ let materialv = new THREE.MeshBasicMaterial({
        videoShape.position.x = ((i%videoRowSize)- videoRowSize/4)*videoDist  ;
        videoShape.position.y = -(Math.floor(i/videoRowSize)*videoDist) + Math.floor(numberOfTestVideos/videoRowSize)
        videoShape.position.z = (1.-cos) * 1.3;
-       scene.add(videoShape)
+      //  scene.add(videoShape)
         //}
         // this is for testing positional audio later
         videoShapes[i]= videoShape
